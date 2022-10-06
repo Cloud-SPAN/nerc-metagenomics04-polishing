@@ -39,6 +39,8 @@ The contiguity is how fragmented the assembly is. If an assembly is highly conti
 
 ### Chimeric Contigs
 
+Chimeric contigs are when contigs belonging to different genomes get stuck together as one continuous piece. This is caused during assembly, and can be controlled by the parameters used to generate the assembly. While it is difficult to identify chimeras, it is worth considering the parameters we use for the polishing and assembly steps because inappropriate parameters can result in problems such as these. 
+
 ### Low base quality
 
 
