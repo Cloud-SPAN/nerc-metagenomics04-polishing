@@ -20,6 +20,27 @@ keypoints:
 - "metaQUAST can generate additional information in a report which can be used to identify misassemblies"
 ---
 
+## Why QC an assembly?
+
+In this episode we will be covering how to check the quality of your genome assembly. You may wonder why this is worth doing. As discussed in the [introduction lesson](https://cloud-span.github.io/metagenomics01-qc-assembly/00-introduction-meta/index.html) and the [assembly lesson](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html), the process of assembly is more complicated for metagenomes than single genomes. Even for single genome assembly, the quality of the assembly is dependent on many variables, such as the quality of the starting material used to generate the data. For metagenomes, this problem is confounded, and the quality of metagenome assemblies are generally poorer. As well as covering why, we will be covering what tools you will need to use in order to judge how good your assembly is.
+
+## What makes an assembly bad?
+
+- Low contiguity
+- Chimeric contigs
+- Low base quality within contigs
+
+### Low contiguity
+
+
+
+### Chimeric Contigs
+
+### Low base quality
+
+
+
+
 ## Using seqkit to generate summary statistics of an assembly
 
 After we finished the draft assembly we used `seqkit stats` to see some basic statistics about the assembly (see the episode on [Assembly](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html)). We will be using it again here to get some more statistics for all three of the assemblies to compare the polishing process.
