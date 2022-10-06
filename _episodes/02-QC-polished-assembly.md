@@ -1,7 +1,7 @@
 ---
 title: "QC polished assembly"
 teaching: 30
-exercises: 10
+exercises: 40
 questions:
 - "Why would we QC an assembly?"
 - "How can we perform QC on an assembly?"
