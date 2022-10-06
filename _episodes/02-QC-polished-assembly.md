@@ -47,7 +47,7 @@ Chimeric contigs are when contigs belonging to different genomes get stuck toget
 
 ### Low base quality
 
-The main tradeoff of using long read data as part of an assembly is that we can get mutations that are present that do not represent actual biological variation. These are errors occuring due to a higher error rate in long reads. Given the increase in contiguity you gain from using long reads, metagenomes are usually higher quality if they are generated from long reads, irrespective of these errors. If you are looking at the abundance of organisms, and the presence of genes for instance for anti microbial resistance, then this might not concern you. However if you were interested in SNP calling for your metagenome, then you would need to consider the validity of SNPs you identify. You could do this by comparing with the raw short read data. 
+The main tradeoff of using long read data as part of an assembly is that we can get mutations that are present that do not represent actual biological variation. These are errors occuring due to a higher error rate in long reads. Given the increase in contiguity you gain from using long reads, metagenomes are usually higher quality if they are generated from long reads, irrespective of these errors. If you are looking at the abundance of organisms, and the presence of genes for instance for anti microbial resistance, then this might not concern you. However if you were interested in SNP calling for your metagenome, then you would need to consider the validity of SNPs you identify. You could do this by comparing with the raw short read data.
 
 
 ## Using seqkit to generate summary statistics of an assembly
@@ -109,7 +109,7 @@ A higher N50 length means that more of the assembly is in longer fragments. That
 
 While it isn't calculated by default, `seqkit stats` has an option to calculate the N50 length. Use the `seqkit stats` help documentation to answer the exercise below.
 
-> ## Exercise X: Flag to get the N50 length
+> ## Exercise 1: Flag to get the N50 length
 > a) Using the help documentation, what flag can we add to get the N50 length for this assembly?  
 > b) What would the new command be if we added this flag?  
 > Bonus exercise: What flag would enable us to save the output table in a tabular (i.e. tsv) format?
@@ -129,7 +129,7 @@ Next, run the command on the original draft assembly (`~/analysis/assembly/assem
 {: .solution}
 
 
-> ## Exercise X: Calculating the N50 length
+> ## Exercise 2: Calculating the N50 length
 > a) What is the output if we run the new command from the above exercise?  
 > b) What new statistics do we get that we didn't have with the original command?  
 > c) What is the N50 length of this assembly?  
@@ -177,7 +177,7 @@ seqkit stats -a assembly/assembly.fasta medaka/consensus.fasta pilon/pilon.fasta
 | pilon/pilon.fasta          | FASTA   | DNA   |       148  | 14,970,138   |   3,144  | 101,149.6  | 6,074,515  |   7,231   | 13,342.5  | 39,283.5  |       0  | 2,992,057  |       0 |       0  | 52.35 |
 
 
-> ## Exercise X: Comparing the Assemblies
+> ## Exercise 3: Comparing the Assemblies
 > Using the seqkit output for all three assemblies, compare the statistics for each of the three assemblies. What has changed across the two rounds of polishing? (From assembly>medaka>pilon)
 >
 > > ## Solution
