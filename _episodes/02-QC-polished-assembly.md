@@ -47,7 +47,7 @@ Chimeric contigs are when contigs belonging to different genomes get stuck toget
 
 ### Low base quality
 
-
+The main tradeoff of using long read data as part of an assembly is that we can get mutations that are present that do not represent actual biological variation. These are errors occuring due to a higher error rate in long reads. Given the increase in contiguity you gain from using long reads, metagenomes are usually higher quality if they are generated from long reads, irrespective of these errors. If you are looking at the abundance of organisms, and the presence of genes for instance for anti microbial resistance, then this might not concern you. However if you were interested in SNP calling for your metagenome, then you would need to consider the validity of SNPs you identify. You could do this by comparing with the raw short read data. 
 
 
 ## Using seqkit to generate summary statistics of an assembly
