@@ -35,11 +35,15 @@ This is not an exhaustive list, but the quality of an metagenome assembly is cha
 
 ### Low contiguity
 
-The contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that the assembly has long stretches of the genome that are pieced together. This is one thing that is strongly correlated with both the technology used, and the quality of the original DNA used. If short reads are used, it is much more difficult to assemble the short reads into a contiguous assembly, so short read only assemblies are often very fragmented. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However the length of the long reads is very dependent on the size of the DNA used to prepare the sample for sequencing, typically for metagenomes bead beating is required as part of the DNA extraction process, and so reads can be longer than short reads (150-300bp), but are unlikely to be very long (5kb versus 30/40kb reads).
+The contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that the assembly has long stretches of the genome that are pieced together. This is one thing that is strongly correlated with both the technology used, and the quality of the original DNA used. If short reads are used, it is much more difficult to assemble the short reads into a contiguous assembly, so short read only assemblies are often very fragmented. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However the length of the long reads is very dependent on the size of the DNA used to prepare the sample for sequencing, typically for metagenomes bead beating is required as part of the DNA extraction process, and so reads can be longer than short reads (150-300bp), but are unlikely to be very long (5kb versus 30/40kb reads). The main downstream problems for this include if you are interested in looking at uninterrupted sections of the genome, for instance if you were identifying a large structural difference like a large insertion occuring in a genome, this might be hard to identify in a very fragmented assembly. However if you use long reads if you are trying to identify genes, the assembly can still be quite fragmented and be able to predict gene coordinates. 
+
+### High duplication/ poor completeness
+
+
 
 ### Chimeric Contigs
 
-Chimeric contigs are when contigs belonging to different genomes get stuck together as one continuous piece. This is caused during assembly, and can be controlled by the parameters used to generate the assembly. While it is difficult to identify chimeras, it is worth considering the parameters we use for the polishing and assembly steps because inappropriate parameters can result in problems such as these. 
+Chimeric contigs are when contigs belonging to different genomes get stuck together as one continuous piece. This is caused during assembly, and can be controlled by the parameters used to generate the assembly. While it is difficult to identify chimeras, it is worth considering the parameters we use for the polishing and assembly steps because inappropriate parameters can result in problems such as these.
 
 ### Low base quality
 
