@@ -299,7 +299,7 @@ samtools index short_read_alignment.bam
 ~~~
 {: .bash}
 
-
+> ## Something to think about
 > Why didn't we include this command in the sequence of pipes in the previous step? The answer is that we will need access to the BAM file produced for further analysis.
 > If we included this step as part of a pipe the intermediate BAM file would not be saved.
 {: .callout}
