@@ -26,13 +26,16 @@ In this episode we will be covering how to check the quality of your genome asse
 
 ## What makes an assembly bad?
 
+This is not an exhaustive list, but the quality of an metagenome assembly is characterised by many variables, most of which effect how many pieces the assembly is in, and how complete the genomes in the assembly are. Others to consider are as follows:
+
 - Low contiguity
+- High duplication/ poor completeness
 - Chimeric contigs
 - Low base quality within contigs
 
 ### Low contiguity
 
-
+The contiguity is how
 
 ### Chimeric Contigs
 
