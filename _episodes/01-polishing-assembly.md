@@ -33,7 +33,7 @@ We have covered this previously in our Experimental Design course in the episode
 
 Polishing your assembly may not be essential. It depends on your downstream use.
 
-If you want to compare the sequence in your assembly against a database to find out what it contains (which we will cover in [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/)), polishing is necessary. If the sequence contains errors such as SNPs and you haven't polished your assembly, you may end up with an incorrect annotation. 
+If you want to compare the sequence in your assembly against a database to find out what it contains (which we will cover in [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/)), polishing is necessary. If the sequence contains errors such as SNPs and you haven't polished your assembly, you may end up with an incorrect annotation.
 
 This is not a big problem if you are not looking at annotations below the genus level, as the distance to the nearest match may remain the same. However one of the main advantages of using whole genome sequencing rather than amplicon sequencing; is that you can assign annotations to the species level.  
 
@@ -43,12 +43,12 @@ We will be using two polishing "strategies" in combination, using both long and 
 
 Polishing with long-reads uses the raw long-reads mapped to the assembly to identify misassemblies, typically repeats and contigs that have been incorrectly joined. We will be doing this using a tool called [Medaka](https://github.com/nanoporetech/medaka).  
 
-We will follow this with a short read polisher called [Pilon](https://github.com/broadinstitute/pilon), which uses the higher quality sequence to substitute errors in our assembly using an alignment of the short-reads to the assembly to correct SNPs and increase poor-quality bases. Typically we would perform the short read polishing step 3 times, increasing the base accuracy each time. To reduce the compute requirements and the time required to finish the assembly, we will be performing both of these steps only once here. 
+We will follow this with a short read polisher called [Pilon](https://github.com/broadinstitute/pilon), which uses the higher quality sequence to substitute errors in our assembly using an alignment of the short-reads to the assembly to correct SNPs and increase poor-quality bases. Typically we would perform the short read polishing step 3 times, increasing the base accuracy each time. To reduce the compute requirements and the time required to finish the assembly, we will be performing both of these steps only once here.
 
 
 ## Polishing an assembly with long reads
 
-First we will polish the draft Flye assembly using the filtered raw long reads. 
+First we will polish the draft Flye assembly using the filtered raw long reads.
 As with the assembly, we need to use polishing software that is especially written for long read raw reads.
 
 [Medaka](https://github.com/nanoporetech/medaka) is a command line tool built by Oxford Nanopore Technologies which will polish an assembly by generating a consensus from raw Nanopore sequences using a recurrent neural network.
@@ -93,7 +93,7 @@ medaka_consensus -h
 * From this we can see that the flags `-i` and `-d` are required.
   - `-i` indicates the input basecalls (i.e. Nanopore raw-reads)
   - `-d` indicates the assembly
-* As Medaka uses recurrent neural networks we need to pick an appropriate model (`-m`) for the data we're using. 
+* As Medaka uses recurrent neural networks we need to pick an appropriate model (`-m`) for the data we're using.
   - From the [documentation](https://github.com/nanoporetech/medaka#models), Medaka models are named to indicate i) the pore type, ii) the sequencing device (MinION or PromethION), iii) the basecaller variant, and iv) the basecaller version, with the format: `{pore}_{device}_{caller variant}_{caller version}`. Medaka doesn't offer an exact model for our dataset. While it is possible to train a model yourself we will not be doing that here and instead will use the closest available model. This is the model `r941_prom_fast_g303`, so we also need to add that to our command as this is not the default.
 * We can use the `-o` flag to specify which directory the output of the command should go into  
 * Finally, to speed this step up we need to specify the number of threads with `-t`.
@@ -173,7 +173,7 @@ In our case we're interested in the polished assembly, so we want the `consensus
 
 > ## BAM and SAM Files
 > A [SAM file](https://genome.sph.umich.edu/wiki/SAM), is a tab-delimited text file that contains information for each individual read and its alignment to the genome. While we do not have time to go into detail about the features of the SAM format, the paper by [Heng Li et al.](http://bioinformatics.oxfordjournals.org/content/25/16/2078.full) provides a lot more detail on the specification.
-> 
+>
 > The compressed binary version of SAM is called a BAM file. We use this version to reduce size and to allow for indexing, which enables efficient random access of the data contained within the file.  
 >
 > The file begins with a header, which is optional. The header describes the source of data, reference sequence, method of alignment etc. - these will change depending on the aligner being used. Following the header is the alignment section. Each line that follows corresponds to alignment information for a single read. There are 11 mandatory fields for essential mapping information and a variable number of other fields for aligner specific information. An example entry from a SAM file is displayed below with the different fields highlighted.  
@@ -294,20 +294,22 @@ We have now generated the `short_read_alignment.bam` file - this is a binary fil
 
 We then index the alignment using the following command.
 
+~~~
 samtools index short_read_alignment.bam
 ~~~
 {: .bash}
 
-> Why didn't we include this command in the sequence of pipes in the previous step? The answer is that we will need access to the BAM file produced for further analysis. 
+
+> Why didn't we include this command in the sequence of pipes in the previous step? The answer is that we will need access to the BAM file produced for further analysis.
 > If we included this step as part of a pipe the intermediate BAM file would not be saved.
 {: .callout}
-~~~
+
 This command will take around a minute so we don't need to run it in the background.
 
 Once your prompt has returned you should also have a file named `short_read_alignment.bam.bai` which is the index.
 
 ### Running Pilon
-Now we have generated the necessary input files we can finally run Pilon. 
+Now we have generated the necessary input files we can finally run Pilon.
 
 First navigate into the `pilon` directory we created earlier when generating the required files.
 Pilon has been preinstalled on the instance so we can first view the help documentation using:
