@@ -211,6 +211,11 @@ First we need to generate a text file on the instance to pass to MetaQUAST. Ther
 > No matter what editor you use, you will need to know where it searches for and saves files. If you start it from the shell, it will (probably) use your current working directory as its default location.
 {: .callout}
 
+## Writing files
+
+We've been able to do a lot of work with files that already exist, but what if we want to write our own files? We're not going to type in a FASTA file, but we'll see as we go through other tutorials, there are a lot of reasons we'll want to write a file, or edit an existing file. To add text to files, we're going to use a text editor called Nano.
+
+
 First, we're going to create a directory for the metaQUAST output in the analysis directory.
 ~~~
 mkdir metaquast
@@ -220,6 +225,13 @@ cd metaquast
 
 To open nano we type the command `nano` followed by the name of the text file we want to generate.
 
+You should see something like this:
+
+![nano201711.png](../fig/nano201711.png)
+
+The text at the bottom of the screen shows the keyboard shortcuts for performing various tasks in `nano`. We will talk more about how to interpret this information soon.
+
+
 ~~~
 nano reference_genomes.txt
 ~~~
@@ -228,7 +240,8 @@ nano reference_genomes.txt
 When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 2.3.1` and some suggested commands at the bottom of the page.
 There should also be a white box which indicates where your cursor is.
 
-You should paste the following list of organism names into this file
+You should paste the following list of organism names into this file.
+
 ~~~
 Bacillus subtilis
 Cryptococcus neoformans
@@ -242,6 +255,9 @@ Salmonella enterica subsp. enterica serovar Typhimurium str. LT2
 Staphylococcus aureus
 ~~~
 {: .bash}
+
+Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You'll be asked what file we want to save this to: press <kbd>Return</kbd> to accept. Once our file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
+return to the shell.
 
 **Note on pasting in GitBASH!**
 
