@@ -563,11 +563,16 @@ You should take a few minutes to explore the file before answering the following
 
 The output is organised into several sections, with a column for each assembly. The worst scoring column is shown in red, the best in blue.
 
+- Genome statistics - this section 
+- Misassemblies
+- Mismatches
+- Statistics without reference
+
 
 > ## Comparing assemblies using MetaQUAST
 > Using the above image how has the iterative polishing from assembly > consensus > pilon improved the assembly?  
 >> ## Answer
->> In the pilon assembly we have improved the assembly is some ways, but worsened the assembly in others. In the final assembly we have a more complete assembly (see genome fraction). We have also increased the total length of the assembly (see total aligned length and Statistics without reference section). The downside of increasing the length is that we may have introduced some missassemblies and duplicated bits of the assembly (see Misassemblies section). This complexity in different statistics showing the assembly is improved and others worse, illustrates the difficulty in assessing the quality of an assembly. 
+>> In the pilon assembly we have improved the assembly is some ways, but worsened the assembly in others. In the final assembly we have a more complete assembly (see genome fraction). We have also increased the total length of the assembly (see total aligned length and Statistics without reference section). The downside of increasing the length is that we may have introduced some missassemblies and duplicated bits of the assembly (see Misassemblies section). This complexity in different statistics showing the assembly is improved and others worse, illustrates the difficulty in assessing the quality of an assembly.
 >>
 > {: .solution}
 {: .challenge}
