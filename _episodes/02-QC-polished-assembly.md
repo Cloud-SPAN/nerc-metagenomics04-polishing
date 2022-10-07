@@ -259,6 +259,28 @@ Staphylococcus aureus
 Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You'll be asked what file we want to save this to: press <kbd>Return</kbd> to accept. Once our file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
 return to the shell.
 
+> ## Control, Ctrl, or ^ Key
+>
+> The Control key is also called the "Ctrl" key. There are various ways
+> in which using the Control key may be described. For example, you may
+> see an instruction to press the <kbd>Ctrl</kbd> key and, while holding it down,
+> press the <kbd>X</kbd> key, described as any of:
+>
+> * `Control-X`
+> * `Control+X`
+> * `Ctrl-X`
+> * `Ctrl+X`
+> * `^X`
+> * `C-x`
+>
+> In `nano`, along the bottom of the screen you'll see `^G Get Help ^O WriteOut`.
+> This means that you can use <kbd>Ctrl</kbd>-<kbd>G</kbd> to get help and <kbd>Ctrl</kbd>-<kbd>O</kbd> to save your
+> file.
+{: .callout}
+
+Now you've written a file. You can take a look at it with `less` or `cat`, or open it up again and edit it with `nano`.
+
+
 **Note on pasting in GitBASH!**
 
 To continue, press <kbd>Ctrl</kbd>+<kbd>O</kbd> to save the file. You will the be prompted with `File Name to Write: reference_genomes.txt` - as we named the file when we first used the command we don't need to change this name and can press enter to save the file. You can then exit from Nano with <kbd>Ctrl</kbd>+<kbd>X</kbd>.
