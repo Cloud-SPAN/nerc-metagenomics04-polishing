@@ -563,10 +563,28 @@ You should take a few minutes to explore the file before answering the following
 
 The output is organised into several sections, with a column for each assembly. The worst scoring column is shown in red, the best in blue.
 
-- Genome statistics - this section 
-- Misassemblies
-- Mismatches
-- Statistics without reference
+#### Genome statistics
+This section determines the quality of the assembly based on the size of the total assembly. The duplication ratio is the amount of the total assembly that is represented more than once. The more fragmented the assembly, the higher this value will be. See **What makes an assembly bad** section above to see further details.
+
+#### Misassemblies
+Missassemblies are when pieces in an assembly are overlapped in the incorrect way. In the metaQUAST manual, they define missassemblies in the four following ways (taken from the manual):
+
+misassemblies is the number of positions in the contigs (breakpoints) that satisfy one of the following criteria.
+
+- the left flanking sequence aligns over 1 kbp away from the right flanking sequence on the reference;
+- flanking sequences overlap on more than 1 kbp;
+- flanking sequences align to different strands or different chromosomes;
+- flanking sequences align on different reference genomes (MetaQUAST only)
+
+These can be caused by errors in the assembly, or they can be caused my structural variation in the sample, such as inversions, relocations and translocation.
+
+#### Mismatches
+This is where there are incorrect bases in the contigs making up the assembly. The summary gives you the total number of mismatches per 100kbp of sequence and short insertions and deletions (indels) per 100kbp.
+
+#### Statistics without reference
+The statistics without a reference are based on the full assembly rather than comparing the assembly to the species that you have asked it to compare to. The largest contig is an indicator of how good the overall assembly is. If the largest contig is small, it means that the rest of the assembly is of a poor quality.
+
+There is a detailed description of each of the outputs in the [metaQUAST manual](https://quast.sourceforge.net/docs/manual.html#sec3) which you can use to understand the output more fully.
 
 
 > ## Comparing assemblies using MetaQUAST
