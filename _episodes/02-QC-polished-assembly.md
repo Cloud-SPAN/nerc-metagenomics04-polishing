@@ -280,10 +280,16 @@ return to the shell.
 
 Now you've written a file. You can take a look at it with `less` or `cat`, or open it up again and edit it with `nano`.
 
+### Copying and pasting in Git bash
 
-**Note on pasting in GitBASH!**
+Most people will want to use <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> to copy and paste. However in GitBash these shortcuts have other functions. <kbd>Ctrl</kbd>+<kbd>C</kbd> interrupts the currently running command and <kbd>Ctrl</kbd>+<kbd>V</kbd> tells the terminal to treat every keystroke as a literal character, so will add shortcuts like <kbd>Ctrl</kbd>+<kbd>C</kbd> as characters.
 
-To continue, press <kbd>Ctrl</kbd>+<kbd>O</kbd> to save the file. You will the be prompted with `File Name to Write: reference_genomes.txt` - as we named the file when we first used the command we don't need to change this name and can press enter to save the file. You can then exit from Nano with <kbd>Ctrl</kbd>+<kbd>X</kbd>.
+Instead you can copy and paste in two ways:
+
+1. Keyboard: Use <kbd>Shift</kbd> and the left/right arrows to select text and press <kbd>Enter</kbd> to copy. You can paste the text by pressing <kbd>Insert</kbd>.
+
+2. Mouse: Left click and drig to highlight text, then right click to copy. Move the cursor to where you want to paste and right click to paste.
+
 
 > ## Control, Ctrl, or ^ Key
 >
