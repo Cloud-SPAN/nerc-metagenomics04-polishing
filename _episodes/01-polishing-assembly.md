@@ -101,10 +101,19 @@ medaka_consensus -h
 This gives us the command:
 ~~~
 cd analysis/
-medaka_consensus -i ../data/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 4 &> medaka.out &
+medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 4 &> medaka.out &
 ~~~
 {: .bash}
-Note that we have added `&> medaka.out &` to redirect the output and run the command in the background. Medaka shouldn't take as long as Flye did in the previous step (probably around 20 mins), but it's a good idea to run things in the background so that you can do other things while the program is running.
+Note that we have added `&> medaka.out &` to redirect the output and run the command in the background.  
+Medaka shouldn't take as long as Flye did in the previous step (probably around 20 mins), but it's a good idea to run things in the background so that you can do other things while the program is running.
+
+We can check the command is running like we did for Flye with `jobs`. If it is successfully running you should see an output like:
+
+~~~
+[1]+  Running                 medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 4 &> medaka.out &
+~~~
+{: .output}
+
 
 Similar to Flye, we can look in the output file (`medaka.out`) to check the progress of the command.
 ~~~
