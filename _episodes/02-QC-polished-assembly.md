@@ -22,20 +22,31 @@ keypoints:
 
 ## Why QC an assembly?
 
-In this episode we will be covering how to check the quality of your genome assembly. You may wonder why this is worth doing. As discussed in the [introduction lesson](https://cloud-span.github.io/metagenomics01-qc-assembly/00-introduction-meta/index.html) and the [assembly lesson](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html), the process of assembly is more complicated for metagenomes than single genomes. Even for single genome assembly, the quality of the assembly is dependent on many variables, such as the quality of the starting material used to generate the data. For metagenomes, this problem is confounded, and the quality of metagenome assemblies are generally poorer. As well as covering why, we will be covering what tools you will need to use in order to judge how good your assembly is.
+As discussed previously, the process of assembly is more complicated for metagenomes than single genomes. 
+The quality of assembly for a single genome is dependent on many variables, including the quality of the sample used to generate the data. For metagenome assembly this problem is confounded. This means the quality of metagenome assemblies is generally poor.
+
+In this episode we will cover how to check the quality of your genome assembly. 
 
 ## What makes an assembly bad?
 
-This is not an exhaustive list, but the quality of an metagenome assembly is characterised by many variables, most of which effect how many pieces the assembly is in, and how complete the genomes in the assembly are. Others to consider are as follows:
+The quality of a metagenome assembly is characterised by many variables. Most of these variables affect how many pieces the assembly is in and how complete the genomes are. Other variables to consider:
 
 - Low contiguity
 - High duplication/ poor completeness
 - Chimeric contigs
 - Low base quality within contigs
 
+This is not an exhaustive list.
+
 ### Low contiguity
 
-The contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that the assembly has long stretches of the genome that are pieced together. This is one thing that is strongly correlated with both the technology used, and the quality of the original DNA used. If short reads are used, it is much more difficult to assemble the short reads into a contiguous assembly, so short read only assemblies are often very fragmented. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However the length of the long reads is very dependent on the size of the DNA used to prepare the sample for sequencing, typically for metagenomes bead beating is required as part of the DNA extraction process, and so reads can be longer than short reads (150-300bp), but are unlikely to be very long (5kb versus 30/40kb reads). The main downstream problems for this include if you are interested in looking at uninterrupted sections of the genome, for instance if you were identifying a large structural difference like a large insertion occuring in a genome, this might be hard to identify in a very fragmented assembly. However if you use long reads if you are trying to identify genes, the assembly can still be quite fragmented and be able to predict gene coordinates.
+Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that are pieced together. 
+
+Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. 
+
+However, the length of the long reads is dependent on the size of the DNA used to prepare the sample for sequencing. For example, bead beating is typically required as part of the DNA extraction process for metagenomes. This process gives reads which are longer than short reads (150-300bp) but shorter than most long reads (5kbp versus 30 or 40 kbp). 
+
+The main downstream problems for this include if you are interested in looking at uninterrupted sections of the genome, for instance if you were identifying a large structural difference like a large insertion occuring in a genome, this might be hard to identify in a very fragmented assembly. However if you use long reads if you are trying to identify genes, the assembly can still be quite fragmented and be able to predict gene coordinates.
 
 ### High duplication/ poor completeness
 
