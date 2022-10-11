@@ -457,7 +457,8 @@ We can see there are many different options for pilon. We will be using the defa
 * `--outdir` - this will generate a directory for all the output
 
 ~~~
-pilon --genome consensus.fasta --unpaired short_read_alignment.bam &> pilon.out &
+cd ~/cs_course/analysis/
+pilon --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
 ~~~
 {: .bash}
 
