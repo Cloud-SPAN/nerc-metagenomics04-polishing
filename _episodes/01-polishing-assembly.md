@@ -458,7 +458,7 @@ We can see there are many different options for pilon. We will be using the defa
 
 ~~~
 cd ~/cs_course/analysis/
-pilon --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
+java -Xmx16G -jar /home/csuser/.miniconda3/share/pilon-1.24-0/pilon.jar --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
 ~~~
 {: .bash}
 
