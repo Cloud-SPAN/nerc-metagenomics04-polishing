@@ -229,7 +229,7 @@ This will generate five additional files in the `medaka` directory with the file
 Next we will make an output directory before we align the short reads to the draft assembly.
 
 ~~~
-cd ~/analysis/
+cd ~/cs_course/analysis/
 mkdir pilon
 cd pilon
 ~~~
@@ -249,7 +249,7 @@ To do this alignment we will be adapting and combining the commands used in [Gen
 We will be using two pipes to join three separate steps. First we will align the raw reads to the draft assembly, then convert the output to BAM format, before finally sorting this alignment to generate a sorted BAM file. Chaining the steps together together will only generate one final output file, avoiding the need to generate large intermediary files we don't need again between the other two steps.
 
 * First we will generate the alignment using BWA mem:
- `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
+ `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`.
 * Then we will convert the alignment into BAM with:
   `samtools view`
 * Finally we will sort the alignment with:
