@@ -22,10 +22,10 @@ keypoints:
 
 ## Why QC an assembly?
 
-As discussed previously, the process of assembly is more complicated for metagenomes than single genomes. 
+As discussed previously, the process of assembly is more complicated for metagenomes than single genomes.
 The quality of assembly for a single genome is dependent on many variables, including the quality of the sample used to generate the data. For metagenome assembly this problem is confounded. This means the quality of metagenome assemblies is generally poor.
 
-In this episode we will cover how to check the quality of your genome assembly. 
+In this episode we will cover how to check the quality of your genome assembly.
 
 ## What makes an assembly bad?
 
@@ -40,11 +40,11 @@ This is not an exhaustive list.
 
 ### Low contiguity
 
-Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that are pieced together. 
+Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that are pieced together.
 
-Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. 
+Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats.
 
-However, the length of the long reads is dependent on the size of the DNA used to prepare the sample for sequencing. For example, bead beating is typically required as part of the DNA extraction process for metagenomes. This process gives reads which are longer than short reads (150-300bp) but shorter than most long reads (5kbp versus 30 or 40 kbp). 
+However, the length of the long reads is dependent on the size of the DNA used to prepare the sample for sequencing. For example, bead beating is typically required as part of the DNA extraction process for metagenomes. This process gives reads which are longer than short reads (150-300bp) but shorter than most long reads (5kbp versus 30 or 40 kbp).
 
 The main downstream problems for this include if you are interested in looking at uninterrupted sections of the genome, for instance if you were identifying a large structural difference like a large insertion occuring in a genome, this might be hard to identify in a very fragmented assembly. However if you use long reads if you are trying to identify genes, the assembly can still be quite fragmented and be able to predict gene coordinates.
 
@@ -67,6 +67,7 @@ After we finished the draft assembly we used `seqkit stats` to see some basic st
 
 We can again review the help documentation for seqkit stats.
 ~~~
+cd ~/cs_course/analysis/
 seqkit stats --help
 ~~~
 {: .bash}
@@ -131,11 +132,11 @@ While it isn't calculated by default, `seqkit stats` has an option to calculate 
 > {: .solution}
 {: .challenge}
 
-Next, run the command on the original draft assembly (`~/analysis/assembly/assembly.fasta`) to calculate the N50 length and answer the questions below about the output.
+Next, run the command on the original draft assembly (`~/cs_course/analysis/assembly/assembly.fasta`) to calculate the N50 length and answer the questions below about the output.
 
 > ## Hint: Seqkit stats N50 command
 > ~~~
-> seqkit stats -a analysis/assembly/assembly.fasta
+> seqkit stats -a assembly/assembly.fasta
 > ~~~
 {: .solution}
 
@@ -148,8 +149,8 @@ Next, run the command on the original draft assembly (`~/analysis/assembly/assem
 >> ## Solution
 >> a)
 >> ~~~
->> file          format type num_seqs sum_len    min_len  avg_len    max_len     Q1     Q2       Q3    sum_gap  N50      Q20(%) Q30(%) GC(%)
->> assembly.fasta FASTA  DNA  146      14,953,273  3,164  102,419.7  6,068,630  7,364  13,415.5 35,259 0       2,976,503  0     0     52.48
+>> file                     format  type  num_seqs     sum_len  min_len   avg_len    max_len     Q1      Q2      Q3  sum_gap        N50  Q20(%)  Q30(%)  GC(%)
+>> assembly/assembly.fasta  FASTA   DNA        154  15,042,667    3,164  97,679.7  6,068,626  7,305  13,291  34,356        0  2,976,488       0       0  52.39
 >> ~~~
 >> {: .output}
 >> b) Comparing the header line from this command to the original command we can see we've now got statistics for Q1, Q2, Q3, sum_gap, N50, Q20(%) and Q30(%)  
@@ -165,7 +166,7 @@ Instead of passing just one FASTA file to `seqkit stats` we can use all three FA
 
 First we need to navigate into the analysis directory.
 ~~~
-cd ~/analysis/
+cd ~/cs_course/analysis/
 ~~~
 {: .bash}
 
@@ -181,12 +182,11 @@ seqkit stats -a assembly/assembly.fasta medaka/consensus.fasta pilon/pilon.fasta
 {: .bash}
 
 
-| file                       | format  | type  | num_seqs   |     sum_len  | min_len  |   avg_len  |   max_len  |       Q1  |       Q2  |       Q3  | sum_gap  |       N50  | Q20(%)  | Q30(%)   | GC(%) |
-|----------------------------|---------|-------|------------|--------------|----------|------------|------------|-----------|-----------|-----------|----------|------------|---------|----------|-------|
-| assembly/assembly.fasta    | FASTA   | DNA   |       148  | 14,941,594   |   3,164  | 100,956.7  | 6,068,569  | 7,334.5   | 13,415.5  | 39,268.5  |       0  | 2,976,491  |       0 |       0  | 52.47 |
-| medaka/consensus.fasta     | FASTA   | DNA   |       148  | 14,961,385   |   3,142  | 101,090.4  | 6,074,403  |   7,227   |   13,333  |   39,289  |       0  | 2,991,852  |       0 |       0  | 52.38 |
-| pilon/pilon.fasta          | FASTA   | DNA   |       148  | 14,970,138   |   3,144  | 101,149.6  | 6,074,515  |   7,231   | 13,342.5  | 39,283.5  |       0  | 2,992,057  |       0 |       0  | 52.35 |
-
+| file                    | format | type | num_seqs | sum_len  | min_len | avg_len | max_len | Q1     | Q2      | Q3      | sum_gap | N50     | Q20(%) | Q30(%) | GC(%) |
+|-------------------------|--------|------|----------|----------|---------|---------|---------|--------|---------|---------|---------|---------|--------|--------|-------|
+| assembly/assembly.fasta | FASTA  | DNA  | 154      | 15042667 | 3164    | 97679.7 | 6068626 | 7305.0 | 13291.0 | 34356.0 | 0       | 2976488 | 0.00   | 0.00   | 52.39 |
+| medaka/consensus.fasta  | FASTA  | DNA  | 154      | 15062138 | 3142    | 97806.1 | 6074421 | 7166.0 | 13265.5 | 34010.0 | 0       | 2991856 | 0.00   | 0.00   | 52.30 |
+| pilon/pilon.fasta       | FASTA  | DNA  | 154      | 15070837 | 3144    | 97862.6 | 6074532 | 7175.0 | 13279.5 | 34010.0 | 0       | 2992063 | 0.00   | 0.00   | 52.27 |
 
 > ## Exercise 3: Comparing the Assemblies
 > Using the seqkit output for all three assemblies, compare the statistics for each of the three assemblies. What has changed across the two rounds of polishing? (From assembly>medaka>pilon)
