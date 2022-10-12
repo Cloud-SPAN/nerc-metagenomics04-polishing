@@ -229,6 +229,7 @@ We've been able to do a lot of work with files that already exist, but what if w
 
 First, we're going to create a directory for the metaQUAST output in the analysis directory.
 ~~~
+cd ~/cs_course/analysis/
 mkdir metaquast
 cd metaquast
 ~~~
@@ -248,7 +249,7 @@ nano reference_genomes.txt
 ~~~
 {: .bash}
 
-When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 2.3.1` and some suggested commands at the bottom of the page.
+When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 4.8` and some suggested commands at the bottom of the page.
 There should also be a white box which indicates where your cursor is.
 
 You should paste the following list of organism names into this file.
@@ -287,41 +288,18 @@ return to the shell.
 > In `nano`, along the bottom of the screen you'll see `^G Get Help ^O WriteOut`.
 > This means that you can use <kbd>Ctrl</kbd>-<kbd>G</kbd> to get help and <kbd>Ctrl</kbd>-<kbd>O</kbd> to save your
 > file.
-{: .callout}
-
-Now you've written a file. You can take a look at it with `less` or `cat`, or open it up again and edit it with `nano`.
-
-### Copying and pasting in Git bash
-
-Most people will want to use <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> to copy and paste. However in GitBash these shortcuts have other functions. <kbd>Ctrl</kbd>+<kbd>C</kbd> interrupts the currently running command and <kbd>Ctrl</kbd>+<kbd>V</kbd> tells the terminal to treat every keystroke as a literal character, so will add shortcuts like <kbd>Ctrl</kbd>+<kbd>C</kbd> as characters.
-
-Instead you can copy and paste in two ways:
-
-1. Keyboard: Use <kbd>Shift</kbd> and the left/right arrows to select text and press <kbd>Enter</kbd> to copy. You can paste the text by pressing <kbd>Insert</kbd>.
-
-2. Mouse: Left click and drig to highlight text, then right click to copy. Move the cursor to where you want to paste and right click to paste.
-
-
-> ## Control, Ctrl, or ^ Key
->
-> The Control key is also called the "Ctrl" key. There are various ways
-> in which using the Control key may be described. For example, you may
-> see an instruction to press the <kbd>Ctrl</kbd> key and, while holding it down,
-> press the <kbd>X</kbd> key, described as any of:
->
-> * `Control-X`
-> * `Control+X`
-> * `Ctrl-X`
-> * `Ctrl+X`
-> * `^X`
-> * `C-x`
->
-> In `nano`, along the bottom of the screen you'll see `^G Get Help ^O WriteOut`.
-> This means that you can use <kbd>Ctrl</kbd>-<kbd>G</kbd> to get help and <kbd>Ctrl</kbd>-<kbd>O</kbd> to save your
-> file.
 >
 > If you are using a Mac, you might be more familiar with the `Command` key, which is labelled with a <kbd>⌘</kbd> .
 > But you will often use the the `Ctrl` key when working in a Terminal.
+{: .callout}
+
+
+> ## Copying and pasting in Git bash
+>
+> Most people will want to use <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> to copy and paste. However in GitBash these shortcuts have other functions. <kbd>Ctrl</kbd>+<kbd>C</kbd> interrupts the currently running command and <kbd>Ctrl</kbd>+<kbd>V</kbd> tells the terminal to treat every keystroke as a literal character, so will add shortcuts like <kbd>Ctrl</kbd>+<kbd>C</kbd> as characters.
+> Instead you can copy and paste in two ways:
+> 1. Keyboard: Use <kbd>Shift</kbd> and the left/right arrows to select text and press <kbd>Enter</kbd> to copy. You can paste the text by pressing <kbd>Insert</kbd>.
+> 2. Mouse: Left click and drig to highlight text, then right click to copy. Move the cursor to where you want to paste and right click to paste.
 {: .callout}
 
 You should then be able to see this file when you `ls` and view it using `less`.
@@ -342,7 +320,6 @@ First we should look at the help documentation to work out which commands are ri
 metaquast.py -h
 ~~~
 {: .bash}
-
 
 
 > ## MetaQUAST help documentation
@@ -483,7 +460,7 @@ metaquast.py --references-list reference_genomes.txt ../assembly/assembly.fasta 
 
 This should take around 5 minutes so we will be leaving it running in the foreground.
 
-Once starting the command you should see something like this and metaQUAST will start downloading the reference species selected.
+Once starting the command you should see something like this and metaQUAST will start downloading the reference species we specified in our files.
 
 ~~~
 Version: 5.2.0
