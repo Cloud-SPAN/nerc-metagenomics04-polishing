@@ -498,12 +498,12 @@ Mean total coverage: 535
 
 If not already in there, we can navigate into the `pilon` directory and have a look at the output files Pilon has produced.
 ~~~
-cd ~/analysis/pilon
+cd ~/cs_course/analysis/pilon
 ls
 ~~~
 {: .bash}
 ~~~
-alignment.out  pilon.fasta  pilon.out  short_read_alignment.bam  short_read_alignment.bam.bai
+alignment.out  pilon.fasta short_read_alignment.bam  short_read_alignment.bam.bai
 ~~~
 {: .output}
 
