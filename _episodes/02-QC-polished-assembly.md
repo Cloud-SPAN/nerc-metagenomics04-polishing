@@ -3,7 +3,7 @@ title: "QC polished assembly"
 teaching: 30
 exercises: 40
 questions:
-- "Why would we QC an assembly?"
+- "Why would we quality control (QC) an assembly?"
 - "How can we perform QC on an assembly?"
 - "What metrics can we compare between assemblies to understand the quality of an assembly?"
 objectives:
@@ -13,7 +13,7 @@ objectives:
 - "Apply seqkit to assess multiple assemblies"
 - "Use metaQUAST to identify the quality of an assembly."
 keypoints:
-- "The N50 is the contig length of the 50 percentile. Which means that 50% of the contigs are at least this length in the assembly"
+- "The N50 is the contig length of the 50th percentile, meaning that 50% of the contigs are at least this length in the assembly"
 - "A misassembly is when a portion of the assembly is incorrectly put back together"
 - "The largest contig is the longest contiguous piece in the assembly"
 - "Seqkit can generate summary statistics that will tell us the N50, largest contig and the number of gaps"
@@ -25,32 +25,31 @@ keypoints:
 As discussed previously, the process of assembly is more complicated for metagenomes than single genomes.
 The quality of assembly for a single genome is dependent on many variables, including the quality of the sample used to generate the data. For metagenome assembly this problem is confounded. This means the quality of metagenome assemblies is generally poor.
 
-In this episode we will cover how to check the quality of your genome assembly.
+In this episode we will cover how to check the quality of your metagenome assembly. 
 
-## What makes an assembly bad?
+## What makes an assembly poor quality?
 
-The quality of a metagenome assembly is characterised by many variables. Most of these variables affect how many pieces the assembly is in and how complete the genomes are. Other variables to consider:
-
-- Low contiguity
-- High duplication/ poor completeness
-- Chimeric contigs
-- Low base quality within contigs
-
-This is not an exhaustive list.
+Many things affect the quality of a metagenome assembly. Most of these variables affect how many fragments the genome is in and how complete the sequencing was. Some important variables are discussed in more detail below.
 
 ### Low contiguity
 
-Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that are pieced together.
+Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that have been successfully pieced together.
 
-Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats.
+Contiguity is affected by the quality of the original sample and the technology/process used for processing. In general the shorter the reads are the mor fragmented the genome will be. As a result, short read only assemblies tend to be less contiguous. Longer fragments make it easier to span areas that are tricky to assemble, like repeats.
 
-However, the length of the long reads is dependent on the size of the DNA used to prepare the sample for sequencing. For example, bead beating is typically required as part of the DNA extraction process for metagenomes. This process gives reads which are longer than short reads (150-300bp) but shorter than most long reads (5kbp versus 30 or 40 kbp).
+Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However, some preparation methods, such as bead-beating, result in long-reads which are relatively short.
 
-The main downstream problems for this include if you are interested in looking at uninterrupted sections of the genome, for instance if you were identifying a large structural difference like a large insertion occuring in a genome, this might be hard to identify in a very fragmented assembly. However if you use long reads if you are trying to identify genes, the assembly can still be quite fragmented and be able to predict gene coordinates.
+This is worth bearing in mind if you need to look at long uninterrupted sections of the genome (e.g. if you were trying to identify a large structural difference) as in this case you would struggle to use a fragmented assembly.
 
-### High duplication/ poor completeness
+### High duplication
 
-A duplication is when you have multiple copies of the same genome region in the assembly. This is more difficult to ascertain from a whole metagenome assembly, but when you have binned the assembly into MAGs, which are putative single organisms, then most genes should occur a defined number of times. We will use checkM in a [later episode](https://cloud-span.github.io/metagenomics04-binning_funa/02-binning_quality/index.html) which compares the number of marker genes observed in a bin to a database. However in terms of whole metagenome stastistics you can typically see whether a genome has a lot of duplication if the assembly size is much higher than you would expect compared to similar metagenomes. Again this is more difficult for metagenomes, but is worth considering. Alongside regions of the genome being present in additional copies sometimes we have regions that are not in the assembly that we would expect, this means that the metagenome is not very complete. Again, we will be using checkM later to check this.  
+Duplication is having multiple copies of the same genome region in the assembly.
+
+This is difficult to ascertain from a whole metagenome assembly but in later steps it is easier to exclude duplicates (this comes after binning). However, it is possible to see whether a genome has excess duplication based on the overall assembly size - if it is much bigger than expected then there may have been duplication.
+
+### Poor completeness
+
+Sometimes there an regions of the assembly that are unexpectedly missing, meaning the metagenome is incomplete.
 
 ### Chimeric Contigs
 
@@ -58,12 +57,13 @@ Chimeric contigs are when contigs belonging to different genomes get stuck toget
 
 ### Low base quality
 
-The main tradeoff of using long read data as part of an assembly is that we can get mutations that are present that do not represent actual biological variation. These are errors occuring due to a higher error rate in long reads. Given the increase in contiguity you gain from using long reads, metagenomes are usually higher quality if they are generated from long reads, irrespective of these errors. If you are looking at the abundance of organisms, and the presence of genes for instance for anti microbial resistance, then this might not concern you. However if you were interested in SNP calling for your metagenome, then you would need to consider the validity of SNPs you identify. You could do this by comparing with the raw short read data.
+Low base quality happens when mutations are present in reads that do not reflect actual biological variation. This happens more in long reads due to a higher error rate. However, this is outweighed by the fact that using long reads for metagenome assemblies results in higher overall quality due to higher contiguity.
 
+If base quality is very important to you (e.g. if you are looking at SNP calling) you need to consider the validity of the SNPs you identify by comparing them to raw short read data.
 
 ## Using seqkit to generate summary statistics of an assembly
 
-After we finished the draft assembly we used `seqkit stats` to see some basic statistics about the assembly (see the episode on [Assembly](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html)). We will be using it again here to get some more statistics for all three of the assemblies to compare the polishing process.
+After finishing the draft assembly we used `seqkit stats` to see some basic statistics about the assembly. We will be using it again to get summary statistics for all three of the assemblies. We can then use those statistics to examine the polishing proces..
 
 We can again review the help documentation for seqkit stats.
 ~~~
@@ -299,7 +299,7 @@ return to the shell.
 > Most people will want to use <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> to copy and paste. However in GitBash these shortcuts have other functions. <kbd>Ctrl</kbd>+<kbd>C</kbd> interrupts the currently running command and <kbd>Ctrl</kbd>+<kbd>V</kbd> tells the terminal to treat every keystroke as a literal character, so will add shortcuts like <kbd>Ctrl</kbd>+<kbd>C</kbd> as characters.
 > Instead you can copy and paste in two ways:
 > 1. Keyboard: Use <kbd>Shift</kbd> and the left/right arrows to select text and press <kbd>Enter</kbd> to copy. You can paste the text by pressing <kbd>Insert</kbd>.
-> 2. Mouse: Left click and drig to highlight text, then right click to copy. Move the cursor to where you want to paste and right click to paste.
+> 2. Mouse: Left click and drag to highlight text, then right click to copy. Move the cursor to where you want to paste and right click to paste.
 {: .callout}
 
 You should then be able to see this file when you `ls` and view it using `less`.
