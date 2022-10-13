@@ -263,7 +263,7 @@ We will be using two pipes to join three separate steps. First we will align the
 5. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
-This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background. 
+This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background.
 
 Add the pipes between these commands and run:
 ~~~
