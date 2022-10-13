@@ -84,9 +84,9 @@ medaka_consensus -h
   - `-i` indicates the input basecalls _i.e._, the Nanopore raw-reads, what we are polishing with.
   - `-d` indicates the assembly we are polishing
 * Other flags are optional
-  - `-m` allows to select an apropriate recurrent neural network model. The [documentation](https://github.com/nanoporetech/medaka#models) describes the models which are named to indicate i) the pore type, ii) the sequencing device (MinION or PromethION), iii) the basecaller variant, and iv) the basecaller version, with the format: `{pore}_{device}_{caller variant}_{caller version}`. Medaka doesn't offer an exact model for our dataset. We will use the closest available model: `r941_prom_fast_g303`. It is also possible specify a bespoke model
-  `-o` allows specify the output directory  
-  `-t` allows us to specify the number of threads so we can speed the process up
+  - `-m` allows to select an apropriate recurrent neural network model. The [documentation](https://github.com/nanoporetech/medaka#models) describes the models which are named to indicate i) the pore type, ii) the sequencing device (MinION or PromethION), iii) the basecaller variant, and iv) the basecaller version, with the format: `{pore}_{device}_{caller variant}_{caller version}`. Medaka doesn't offer an exact model for our dataset. We will use the closest available model: `r941_prom_fast_g303`. It is also possible specify a bespoke model.  
+  - `-o` allows specify the output directory  
+  - `-t` allows us to specify the number of threads so we can speed the process up
 
 The `medaka_consensus` polishing will take about 20 mins so we will run it in the background and redirect the output to a file. 
 Make sure you are in the `analysis` folder and run the `medaka_consensus` on `assembly.fasta`:
@@ -205,12 +205,17 @@ Pilon is in the latter group of bioinformatics software, so we will need to do s
 
 ### Generating the Pilon input files
 
-We will first use the program [BWA](https://github.com/lh3/bwa) to generate an alignment of the raw short reads against the draft genome.
+We will first use the program [BWA](https://github.com/lh3/bwa) to generate an alignment of the raw short reads against the draft genome in consensus.fasta. The steps will be:
+1. indexing the polished assembly, consensus.fasta with `bwa index`. Indexing allows the aligner to quickly find potential alignment sites for query sequences in a genome, which saves time during alignment.
+2. creating a directory for the outputs of Pilon
+3. aligning the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`
+4. converting the short read alignment alignment to a BAM file `samtools view`
+5. sorting the short read alignment with `samtools sort`
+6. indexing the short read alignment with `samtools index`
 
-We've previously covered aligning reads to a genome in [Genomics - Variant Calling](https://cloud-span.github.io/04genomics/01-variant_calling/index.html). We will be using very similar commands here.
-
-We first need to index the polished assembly we got from Medaka. Indexing allows the aligner to quickly find potential alignment sites for query sequences in a genome, which saves time during alignment.
+Make sure are in the `analysis` folder and index the consensus assembly:
 ~~~
+cd ~/cs_course/analysis/
 bwa index medaka/consensus.fasta
 ~~~
 {: .bash}
@@ -229,40 +234,38 @@ Once the indexing is complete you should see an output like:
 ~~~
 {: .output}
 
-This will generate five additional files in the `medaka` directory with the file extensions `.pac`, `.bwt`, `.ann`, `.amb` and `.sa`. These files are used by BWA in the next step of this process.
+This will generate five additional files in the `medaka` directory with the file extensions `.pac`, `.bwt`, `.ann`, `.amb` and `.sa`. These files are used by BWA in step 3.
 
-Next we will make an output directory before we align the short reads to the draft assembly.
+Next we will make an output directory and move into it:
 
 ~~~
-cd ~/cs_course/analysis/
 mkdir pilon
 cd pilon
 ~~~
 {: .bash}
 
-To do this alignment we will be adapting and combining the commands used in [Genomics - Variant Calling](https://cloud-span.github.io/04genomics/01-variant_calling/index.html). You may find it useful to go back and remind yourself of these commands before continuing..
+We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 
 > ## Chaining together commands with a pipe
-> It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed to another command for further processing. This is especially useful for situations where you may not need the intermediate file again. To do this we use the pipe `|` character.  
+> It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed as input to the next without the need for intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe character is `|` and obtainined with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
+> 
+> You can use multiple pipes in one command but data will only go from the left to the right:
 >
-> You can find the pipe (<kbd>|</kbd>) character on your keyboard, usually by typing <kbd>⇧ Shift</kbd> + <kbd>\</kbd>.
-> You can use multiple pipes in one command but data will only go from the left to the right.
-> I.e.
 > `command1 | command2 | command3 | .... |`
 {: .callout}
 
 We will be using two pipes to join three separate steps. First we will align the raw reads to the draft assembly, then convert the output to BAM format, before finally sorting this alignment to generate a sorted BAM file. Chaining the steps together together will only generate one final output file, avoiding the need to generate large intermediary files we don't need again between the other two steps.
 
-* First we will generate the alignment using BWA mem:
- `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`.
-* Then we will convert the alignment into BAM with:
-  `samtools view`
-* Finally we will sort the alignment with:
-  `samtools sort`  
+3. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
+   `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
+4. convert the short read alignment alignment to a BAM file `samtools view`: 
+   `samtools view - -Sb` 
+5. sort the short read alignment with `samtools sort`:
+   `samtools sort - -@4 -o short_read_alignment.bam`  
 
 This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background.
 
-After adding the pipes in between steps the command looks like this:
+Add the pipes between these commands and run:
 ~~~
 bwa mem -t 4 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam &> alignment.out &
 ~~~
@@ -306,7 +309,7 @@ Once completed, the end of the `alignment.out` file should contain something lik
 {: .output}
 We have now generated the `short_read_alignment.bam` file - this is a binary file (meaning it's not human readable) so we won't be checking its contents.
 
-We then index the alignment using the following command.
+Now carry out step 6, index the alignment:
 
 ~~~
 samtools index short_read_alignment.bam
@@ -325,8 +328,8 @@ Once your prompt has returned you should also have a file named `short_read_alig
 ### Running Pilon
 Now we have generated the necessary input files we can finally run Pilon.
 
-First navigate into the `pilon` directory we created earlier when generating the required files.
-Pilon has been preinstalled on the instance so we can first view the help documentation using:
+**ER is the cd  needed???** First navigate into the `pilon` directory we created earlier when generating the required files.
+Pilon is installed on the AWS instance and can view the help documentation using:
 
 ~~~
 cd pilon
@@ -461,15 +464,18 @@ We can see there are many different options for pilon. We will be using the defa
 * `--unpaired` - the short reads we used to create the BAM alignment were unpaired, so we need to specify this using this flag
 * `--outdir` - this will generate a directory for all the output
 
+Check you are in the `analysis` folder and run 
+ 
+**ER can we update this command so it can be used as `pilon` in the AMI???**
 ~~~
 cd ~/cs_course/analysis/
 java -Xmx16G -jar /home/csuser/.miniconda3/share/pilon-1.24-0/pilon.jar --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
 ~~~
 {: .bash}
 
-We can again keep track of the analysis by looking at the `pilon.out` file.
+We can again keep track of the analysis by looking at the `pilon.out` file with `less`.
 
-When the command is initially run  
+The top of the file:  
 ~~~
 Pilon version 1.24 Thu Jan 28 13:00:45 2021 -0500
 Genome: ../medaka/consensus.fasta
@@ -501,9 +507,9 @@ Mean total coverage: 535
 ~~~
 {: .output}
 
-If not already in there, we can navigate into the `pilon` directory and have a look at the output files Pilon has produced.
+Navigate into the `pilon` directory and have a look at the output files Pilon has produced.
 ~~~
-cd ~/cs_course/analysis/pilon
+cd pilon
 ls
 ~~~
 {: .bash}
@@ -515,7 +521,7 @@ alignment.out  pilon.fasta short_read_alignment.bam  short_read_alignment.bam.ba
 We can see pilon has produced a fasta file `pilon.fasta`, which is the newly polished assembly.
 This file is now our assembly.
 
-In the next episode we will be assessing the quality of this assembly and compare the quality to the previous draft assemblies.
+In the next episode we will assess the quality of this assembly and compare its quality to that of the unpolished assemly..
 
 > ## Recommended reading:
 > While you're waiting for the polishing to finish, here's some things you might want to read about:
