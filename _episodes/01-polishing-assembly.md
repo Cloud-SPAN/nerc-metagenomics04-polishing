@@ -10,7 +10,6 @@ questions:
 objectives:
 - "Understand why polishing metagenomes is important."  
 - "Understand the different programs used to do short and long read polishing."
-- "Use an enviroment in a bioinformatic pipeline."
 keypoints:
 - "Short reads have a higher base accuracy than long reads and can be used to remove errors in assemblies generated with long reads."
 - "Long reads have a lower accuracy but help generate a more contiguous (less fragmented) assembly, so are used to get the structure of the metagenome, but may have small misassemblies or single nucleotide polymorphisms (SNPs)"
@@ -20,31 +19,25 @@ keypoints:
 
 
 
-In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. Long-reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. However, the base accuracy of long reads is lower than that short reads. Consequently a common technique is to create an assembly from long reads and then correct individual bases using the short read data. This process is known as "polishing" an assembly. More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
+In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. Long-reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. Despite this, some long reads will be misassembled. In addition, the base accuracy of long reads is lower than that short reads and some bases will be incorrectly assigned. Consequently it is common to correct these errors known as "polishing" an assembly. We will use two polishing stratgies:
+1. Polishing with long reads using [Medaka](https://github.com/nanoporetech/medaka). This maps the raw long reads to the assembly to identify contigs that have been incorrectly joined.
+2. Polishing with short reads using [Pilon](https://github.com/broadinstitute/pilon) which uses the more accurate short read data to correct incorrectly called bases in the assembly.
+More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
 
 <img align="left" width="525" height="307" src="{{ page.root }}/fig/04_polishing_diagram_v1.png" alt="Diagram showing overlap of reads for polishing" /> &nbsp; &nbsp; &nbsp;
 
-In the diagram, the long read assembly is shown at the top. The four short reads shown below the assembly have been aligned to it. The third position in the assembly is `A` but the three short reads that cover this region contain a `T`. The assembly probably contains a miscalled base but it can be corrected - or polished - at this position with the higher accuracy short read information.
+**Polishing with short reads**
+In the diagram, the long read assembly is shown at the top. The four short reads shown below the assembly have been aligned to it. The third position in the assembly is `A` but the three short reads that cover this region contain a `T`. The assembly probably contains a miscalled base but it can be corrected - or polished - at this position with the higher accuracy short read information. Typically short read polishing would be carried out three times with the base accuracy increasing each time. However, to reduce the compute requirements and the time required to finish the assembly, we will be performing it just once.
 
 <br clear="left"/>
 
 ## Why bother polishing?
 
-Polishing your assembly may not be essential. It depends on your downstream use.
+Usually, you want to compare the sequence in your assembly against a database to find out what taxa or functionality it contains. The decision to polish your assembly depends the level of detail needed in those identifications. If you need taxa only to the genus level then single incorrect bases are not usually a problem and polishing may not be necessary. However, polishing is important for any of the following:
 
-If you want to compare the sequence in your assembly against a database to find out what it contains (which we will cover in [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/)), polishing is necessary. If the sequence contains errors such as SNPs and you haven't polished your assembly, you may end up with an incorrect annotation.
-
-This is not a big problem if you are not looking at annotations below the genus level, as the distance to the nearest match may remain the same. However one of the main advantages of using whole genome sequencing rather than amplicon sequencing; is that you can assign annotations to the species level.  
-
-There are other situations in which polishing is necessary. For example, if you are using your sequence to match against structural domains to identify the function of your organism, or you are using it to generate protein predictions, you may end up with confounding errors downstream. This is discussed in more detail in [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).  
-
-We will be using two polishing "strategies" in combination, using both long and short reads. In the further reading of this session, you can read about how different combinations of polishing tools can increase assembly accuracy.   
-
-Polishing with long-reads uses the raw long-reads mapped to the assembly to identify misassemblies, typically repeats and contigs that have been incorrectly joined. We will be doing this using a tool called [Medaka](https://github.com/nanoporetech/medaka).  
-
-We will follow this with a short read polisher called [Pilon](https://github.com/broadinstitute/pilon), which uses the higher quality sequence to substitute errors in our assembly using an alignment of the short-reads to the assembly to correct SNPs and increase poor-quality bases. Typically we would perform the short read polishing step 3 times, increasing the base accuracy each time. To reduce the compute requirements and the time required to finish the assembly, we will be performing both of these steps only once here.
-
-
+- You want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/) later in the course.
+- You want to generate protein predictions or identify protein structure domains to determine the functionality of metagenomes. This is discussed in more detail in Watson and Warr (2019): [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).  
+ 
 ## Polishing an assembly with long reads
 
 First we will polish the draft Flye assembly using the filtered raw long reads.
