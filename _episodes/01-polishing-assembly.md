@@ -20,12 +20,11 @@ keypoints:
 
 
 
-In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye. While we could stop there, our draft assembly likely contains errors such as gaps and misassemblies.
+In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. Long-reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. However, the base accuracy of long reads is lower than that short reads. Consequently a common technique is to create an assembly from long reads and then correct individual bases using the short read data. This process is known as "polishing" an assembly. More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
 
 <img align="left" width="525" height="307" src="{{ page.root }}/fig/04_polishing_diagram_v1.png" alt="Diagram showing overlap of reads for polishing" /> &nbsp; &nbsp; &nbsp;
 
-Long-read assemblies have longer reads that can span difficult regions in genomes that short-read assemblies could not. This is helpful particularly for genomes with large repeats. However, as we generated an assembly using long reads, the base accuracy of the long reads is lower, so without polishing we are still likely to have single nucleotide polymorphisms (SNPs) remaining in the data. We can further improve the quality of this assembly using the raw data we have available in a process known as "assembly polishing".
-We have covered this previously in our Experimental Design course in the episode on [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html), and also the [introduction section of this course](https://cloud-span.github.io/metagenomics01-qc-assembly/00-introduction-meta/index.html).
+In the diagram, the long read assembly is shown at the top. The four short reads shown below the assembly have been aligned to it. The third position in the assembly is `A` but the three short reads that cover this region contain a `T`. The assembly probably contains a miscalled base but it can be corrected - or polished - at this position with the higher accuracy short read information.
 
 <br clear="left"/>
 
