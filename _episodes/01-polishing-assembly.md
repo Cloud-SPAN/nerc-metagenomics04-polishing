@@ -92,7 +92,7 @@ The `medaka_consensus` polishing will take about 20 mins so we will run it in th
 Make sure you are in the `analysis` folder and run the `medaka_consensus` on `assembly.fasta`:
 ~~~
 cd analysis/
-medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 4 &> medaka.out &
+medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 8 &> medaka.out &
 ~~~
 {: .bash}
 We have added `&> medaka.out &` to redirect the output to `medaka.out `and run the command in the background.  
@@ -105,7 +105,7 @@ jobs
 
 If it is successfully running you should see an output like:
 ~~~
-[1]+  Running                 medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 4 &> medaka.out &
+[1]+  Running                 medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 8 &> medaka.out &
 ~~~
 {: .output}
 
@@ -257,17 +257,17 @@ We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 We will be using two pipes to join three separate steps. First we will align the raw reads to the draft assembly, then convert the output to BAM format, before finally sorting this alignment to generate a sorted BAM file. Chaining the steps together together will only generate one final output file, avoiding the need to generate large intermediary files we don't need again between the other two steps.
 
 3. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
-   `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
+   `bwa mem -t 8 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
 4. convert the short read alignment alignment to a BAM file `samtools view`:
    `samtools view - -Sb`
 5. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
-This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background.
+This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background. 
 
 Add the pipes between these commands and run:
 ~~~
-(bwa mem -t 4 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam) &> alignment.out &
+(bwa mem -t 8 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam) &> alignment.out &
 ~~~
 {: .bash}
 
@@ -302,7 +302,7 @@ Once completed, the end of the `alignment.out` file should contain something lik
 [M::mem_process_seqs] Processed 8610 reads in 125.241 CPU sec, 31.397 real sec
 [M::mem_process_seqs] Processed 4795 reads in 87.225 CPU sec, 23.866 real sec
 [main] Version: 0.7.17-r1188
-[main] CMD: bwa mem -t 4 consensus.fasta ../ERR3152367_sub5_filtered.fastq
+[main] CMD: bwa mem -t 8 consensus.fasta ../ERR3152367_sub5_filtered.fastq
 [main] Real time: 2454.659 sec; CPU: 9557.109 sec
 [bam_sort_core] merging from 4 files and 4 in-memory blocks...
 ~~~
