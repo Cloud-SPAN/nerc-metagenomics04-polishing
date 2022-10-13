@@ -37,7 +37,7 @@ Usually, you want to compare the sequence in your assembly against a database to
 
 - You want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/) later in the course.
 - You want to generate protein predictions or identify protein structure domains to determine the functionality of metagenomes. This is discussed in more detail in Watson and Warr (2019): [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).  
- 
+
 ## Polishing an assembly with long reads
 
 First we will polish the draft Flye assembly using the filtered raw long reads. As with the assembly, we need to use polishing software that is especially written for long read raw reads.
@@ -88,7 +88,7 @@ medaka_consensus -h
   - `-o` allows specify the output directory  
   - `-t` allows us to specify the number of threads so we can speed the process up
 
-The `medaka_consensus` polishing will take about 20 mins so we will run it in the background and redirect the output to a file. 
+The `medaka_consensus` polishing will take about 20 mins so we will run it in the background and redirect the output to a file.
 Make sure you are in the `analysis` folder and run the `medaka_consensus` on `assembly.fasta`:
 ~~~
 cd analysis/
@@ -97,7 +97,7 @@ medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembl
 {: .bash}
 We have added `&> medaka.out &` to redirect the output to `medaka.out `and run the command in the background.  
 
-We can check the command is running using `jobs`: 
+We can check the command is running using `jobs`:
 ~~~
 jobs
 ~~~
@@ -137,7 +137,7 @@ Constructing minimap index.
 
 
 Medaka first looks for the other programs that it needs (known as dependencies) and their versions. These dependencies are installed on the AWS instance. Once it confirms they are present, it begins by aligning the raw reads (basecalls) to the assembly using minimap.
- 
+
 <kbd>q</kbd> will quite from `less`.
 
 Once medaka has completed the end of the file will contain something like:
@@ -190,7 +190,7 @@ In our case we're interested in the polished assembly, so we want the `consensus
 >
 > The compressed binary version of SAM is called a BAM file. We use this version to reduce size and to allow for indexing, which enables efficient random access of the data contained within the file.  
 >
-> The file begins with a header, which is optional. The header describes the source of data, reference sequence, method of alignment etc. - these will change depending on the aligner being used. Following the header is the alignment section. Each line that follows corresponds to alignment information for a single read. There are 11 mandatory fields for essential mapping information and a variable number of other fields for aligner specific information. 
+> The file begins with a header, which is optional. The header describes the source of data, reference sequence, method of alignment etc. - these will change depending on the aligner being used. Following the header is the alignment section. Each line that follows corresponds to alignment information for a single read. There are 11 mandatory fields for essential mapping information and a variable number of other fields for aligner specific information.
 >
 > See [Genomics - Variant Calling](https://cloud-span.github.io/04genomics/01-variant_calling/index.html) for a deeper dive.  
 {: .callout}
@@ -248,7 +248,7 @@ We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 
 > ## Chaining together commands with a pipe
 > It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed as input to the next without the need for intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe character is `|` and obtainined with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
-> 
+>
 > You can use multiple pipes in one command but data will only go from the left to the right:
 >
 > `command1 | command2 | command3 | .... |`
@@ -258,8 +258,8 @@ We will be using two pipes to join three separate steps. First we will align the
 
 3. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
    `bwa mem -t 4 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
-4. convert the short read alignment alignment to a BAM file `samtools view`: 
-   `samtools view - -Sb` 
+4. convert the short read alignment alignment to a BAM file `samtools view`:
+   `samtools view - -Sb`
 5. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
@@ -267,7 +267,7 @@ This will take around 30 minutes so we will use `&> alignment.out &` to redirect
 
 Add the pipes between these commands and run:
 ~~~
-bwa mem -t 4 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam &> alignment.out &
+(bwa mem -t 4 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam) &> alignment.out &
 ~~~
 {: .bash}
 
@@ -464,8 +464,8 @@ We can see there are many different options for pilon. We will be using the defa
 * `--unpaired` - the short reads we used to create the BAM alignment were unpaired, so we need to specify this using this flag
 * `--outdir` - this will generate a directory for all the output
 
-Check you are in the `analysis` folder and run 
- 
+Check you are in the `analysis` folder and run
+
 **ER can we update this command so it can be used as `pilon` in the AMI???**
 ~~~
 cd ~/cs_course/analysis/
