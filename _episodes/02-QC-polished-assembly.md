@@ -35,8 +35,6 @@ Many things affect the quality of a metagenome assembly. Most of these variables
 
 Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that have been successfully pieced together.
 
-Contiguity is affected by the quality of the original sample and the technology/process used for processing. In general the shorter the reads are the mor fragmented the genome will be. As a result, short read only assemblies tend to be less contiguous. Longer fragments make it easier to span areas that are tricky to assemble, like repeats.
-
 Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However, some preparation methods, such as bead-beating, result in long-reads which are relatively short.
 
 This is worth bearing in mind if you need to look at long uninterrupted sections of the genome (e.g. if you were trying to identify a large structural difference) as in this case you would struggle to use a fragmented assembly.
@@ -57,9 +55,7 @@ Chimeric contigs are when contigs belonging to different genomes get stuck toget
 
 ### Low base quality
 
-Low base quality happens when mutations are present in reads that do not reflect actual biological variation. This happens more in long reads due to a higher error rate. However, this is outweighed by the fact that using long reads for metagenome assemblies results in higher overall quality due to higher contiguity.
-
-If base quality is very important to you (e.g. if you are looking at SNP calling) you need to consider the validity of the SNPs you identify by comparing them to raw short read data.
+Low base quality happens when mutations are present in reads that do not reflect actual biological variation. This happens more in long reads due to a higher error rate. However, this is outweighed by the fact that using long reads for metagenome assemblies results in higher overall quality due to higher contiguity. This is why we 'polished' our genome in the last episode by comparing the draft assembly to raw short reads.
 
 ## Using seqkit to generate summary statistics of an assembly
 
