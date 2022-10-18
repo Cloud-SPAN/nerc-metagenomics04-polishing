@@ -20,16 +20,16 @@ keypoints:
 - "metaQUAST can generate additional information in a report which can be used to identify misassemblies"
 ---
 
-## Why QC an metagenome assembly?
+## Why QC a metagenome assembly?
+We now have a polished assembly. The next thing to do is to perform quality control (QC) checks to make sure we can be confident in our results and conclusions about the taxonomic, metabolic or functional composition of the communities that we are studying. This also allows us to check whether our efforts to improve the assembly with polishing were successful.
 
-We do metagenomics to characterise the taxonomic, metabolic or functional composition of the communities that we study. Assessing the quality of the metagenome assembly is important to shape the confidence we have in our results and conclusions. It also allows us to check the effect of our efforts to improve the draft assembly with long read polihsing and short read polishing.
-
-The quality of metagenome assemblies is typically lower than it is for single genome assemblies.
+The quality of metagenome assemblies is typically lower than it is for single genome assemblies due to the use of long reads.
 
 In this episode we explain what is meant by assembly quality and how to examine and compare the quality of your metagenome assemblies using `seqkit stats` and [MetaQUAST](http://quast.sourceforge.net/metaquast)
 
 
 ## What do we mean by assembly quality?
+There are several variables that affect assembly quality. Let's go over them in more detail.
 
 ### Contiguity
 
@@ -59,9 +59,9 @@ Low base quality happens when mutations are present in reads that do not reflect
 
 ## Using seqkit to generate summary statistics of an assembly
 
-After finishing the draft assembly we used `seqkit stats` to see some basic statistics about the assembly. We will be using it again to get summary statistics for all three of the assemblies. We can then use those statistics to examine the polishing proces..
+After finishing the draft assembly we used `seqkit stats` to see some basic statistics about the assembly. We will be using it again to get summary statistics for all three of the assemblies (unpolished, long read polished and short read polished). We can then use those statistics to examine the polishing process.
 
-We can again review the help documentation for seqkit stats.
+We can review the help documentation for seqkit stats.
 ~~~
 cd ~/cs_course/analysis/
 seqkit stats --help
@@ -194,7 +194,7 @@ seqkit stats -a assembly/assembly.fasta medaka/consensus.fasta pilon/pilon.fasta
 > {: .solution}
 {: .challenge}
 
-We can compare these basic assembly statistics in this way. However, these may not tell the full story as there will also have been changes to the overall sequence ((e.g. correcting individual base errors).
+We can compare these basic assembly statistics in this way. However, these may not tell the full story as there will also have been changes to the overall sequence (e.g. correcting individual base errors).
 
 ## Using metaQUAST to further assess assembly quality
 
