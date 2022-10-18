@@ -20,34 +20,32 @@ keypoints:
 - "metaQUAST can generate additional information in a report which can be used to identify misassemblies"
 ---
 
-## Why QC an assembly?
+## Why QC an metagenome assembly?
 
-As discussed previously, the process of assembly is more complicated for metagenomes than single genomes.
-The quality of assembly for a single genome is dependent on many variables, including the quality of the sample used to generate the data. For metagenome assembly this problem is confounded. This means the quality of metagenome assemblies is generally poor.
+We do metagenomics to characterise the taxonomic, metabolic or functional composition of the communities that we study. Assessing the quality of the metagenome assembly is important to shape the confidence we have in our results and conclusions. It also allows us to check the effect of our efforts to improve the draft assembly with long read polihsing and short read polishing.
 
-In this episode we will cover how to check the quality of your metagenome assembly. 
+The quality of metagenome assemblies is typically lower than it is for single genome assemblies.
 
-## What makes an assembly poor quality?
+In this episode we explain what is meant by assembly quality and how to examine and compare the quality of your metagenome assemblies using `seqkit stats` and [MetaQUAST](http://quast.sourceforge.net/metaquast)
 
-Many things affect the quality of a metagenome assembly. Most of these variables affect how many fragments the genome is in and how complete the sequencing was. Some important variables are discussed in more detail below.
 
-### Low contiguity
+## What do we mean by assembly quality?
 
-Contiguity is how fragmented the assembly is. If an assembly is highly contiguous, it means that there are long stretches of the genome that have been successfully pieced together.
+### Contiguity
+
+A high quality assembly is highly contiguous meaning there are long stretches of the genome that have been successfully pieced together. The opposite of contiguous is fragmented.
 
 Contiguity is strongly correlated with both the technology used and the quality of the original DNA used. "Short read"-only assemblies are often very fragmented as it is much more difficult to assemble the short reads into a contiguous assembly. With long reads it is easier to span bits of a genome that are tricky to reassemble, like repeats. However, some preparation methods, such as bead-beating, result in long-reads which are relatively short.
 
-This is worth bearing in mind if you need to look at long uninterrupted sections of the genome (e.g. if you were trying to identify a large structural difference) as in this case you would struggle to use a fragmented assembly.
+The extent to which contiguity matters depends on your research question. If you need to identify a large structural difference, high contiguity is important.
 
-### High duplication
+### Degree of duplication
 
-Duplication is having multiple copies of the same genome region in the assembly.
+A duplication is when there is more than one copy of a particular region of the genome in the assembly. If a genome is much bigger than expected then there may have been duplication. Removing duplicated regions from assemblies is difficult but is made easier after the process of binning.
 
-This is difficult to ascertain from a whole metagenome assembly but in later steps it is easier to exclude duplicates (this comes after binning). However, it is possible to see whether a genome has excess duplication based on the overall assembly size - if it is much bigger than expected then there may have been duplication.
+### Degree of completeness
 
-### Poor completeness
-
-Sometimes there an regions of the assembly that are unexpectedly missing, meaning the metagenome is incomplete.
+The more complete an assembly, the higher quality it is. Sometimes there an regions of the assembly that are unexpectedly missing, meaning the metagenome is incomplete.
 
 ### Chimeric Contigs
 
@@ -56,6 +54,8 @@ Chimeric contigs are when contigs belonging to different genomes get stuck toget
 ### Low base quality
 
 Low base quality happens when mutations are present in reads that do not reflect actual biological variation. This happens more in long reads due to a higher error rate. However, this is outweighed by the fact that using long reads for metagenome assemblies results in higher overall quality due to higher contiguity. This is why we 'polished' our genome in the last episode by comparing the draft assembly to raw short reads.
+
+-------
 
 ## Using seqkit to generate summary statistics of an assembly
 
