@@ -19,7 +19,9 @@ keypoints:
 
 
 
-In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. Long-reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. Despite this, some long reads will be misassembled. In addition, the base accuracy of long reads is lower than that short reads and some bases will be incorrectly assigned. Consequently it is common to correct these errors known as "polishing" an assembly. We will use two polishing stratgies:
+In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. 
+
+Long reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. Despite this, some long reads will be misassembled. In addition, the base accuracy of long reads is lower than that short reads and some bases will be incorrectly assigned. Consequently it is common to correct these errors known as "polishing" an assembly. We will use two polishing strategies:
 1. Polishing with long reads using [Medaka](https://github.com/nanoporetech/medaka). This maps the raw long reads to the assembly to identify contigs that have been incorrectly joined.
 2. Polishing with short reads using [Pilon](https://github.com/broadinstitute/pilon) which uses the more accurate short read data to correct incorrectly called bases in the assembly.
 More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
@@ -32,11 +34,14 @@ In the diagram, the long read assembly is shown at the top. The four short reads
 <br clear="left"/>
 
 ## Why bother polishing?
+How important polishing is to your analysis will depend on what you need it for. Usually we generate metagenome assemblies so we can compare the sequences to a database and find out what taxa they belong to.
 
-Usually, you want to compare the sequence in your assembly against a database to find out what taxa or functionality it contains. The decision to polish your assembly depends the level of detail needed in those identifications. If you need taxa only to the genus level then single incorrect bases are not usually a problem and polishing may not be necessary. However, polishing is important for any of the following:
+You might NOT need to polish your assembly if:
+- you only need to taxa to the genus level (meaning single incorrect bases are not important)
 
-- You want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/) later in the course.
-- You want to generate protein predictions or identify protein structure domains to determine the functionality of metagenomes. This is discussed in more detail in Watson and Warr (2019): [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).  
+You DO need to polish your assembly if:
+- you want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/) later in the course.
+- you want to generate protein predictions or identify protein structure domains to determine the functionality of metagenomes. This is discussed in more detail in Watson and Warr (2019): [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).   
 
 ## Polishing an assembly with long reads
 
@@ -177,7 +182,7 @@ calls_to_draft.bam  calls_to_draft.bam.bai  consensus.fasta  consensus.fasta.gap
 
 Medaka has created multiple files:
 
-* `calls_to_draft.bam` - a BAM file contaning the alignment of the raw reads (basecalls) to the draft assembly
+* `calls_to_draft.bam` - a BAM file containing the alignment of the raw reads (basecalls) to the draft assembly
 * `calls_to_draft.bam.bai` - an index file of the above BAM file
 * `consensus.fasta` - the consensus sequence, or polished assembly in our case in FASTA format
 * `consensus.fasta.gaps_in_draft_coords.bed` - a BED file containing information about the location of any gaps in the consensus sequence which can be used when visualising the assembly
@@ -521,7 +526,7 @@ alignment.out  pilon.fasta short_read_alignment.bam  short_read_alignment.bam.ba
 We can see pilon has produced a fasta file `pilon.fasta`, which is the newly polished assembly.
 This file is now our assembly.
 
-In the next episode we will assess the quality of this assembly and compare its quality to that of the unpolished assemly..
+In the next episode we will assess the quality of this assembly and compare its quality to that of the unpolished assemly.
 
 > ## Recommended reading:
 > While you're waiting for the polishing to finish, here's some things you might want to read about:
