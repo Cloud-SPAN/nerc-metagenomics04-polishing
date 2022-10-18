@@ -2,4 +2,10 @@
 layout: lesson
 root: .
 ---
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In our previous lesson we used long reads to generate our draft assembly. Long read data is great for tasks like this because they produce a less fragmented assembly and are more likely to span areas with repeats. However, they are also more likely to contain sequencing errors than short read data.
+
+We must therefore use further tools to improve the quality of our draft assembly. We can "polish" our assembly using both long and short read data. After that, we can perform quality control (QC) checks to see what impact the polishing has had.
+
+By the end of this lesson you will be able to:
+- polish a draft metagenome assembly using tools such as Medaka and Pilon
+- check the quality of your draft assembly using Seqkit and metaQUAST
