@@ -473,7 +473,8 @@ Check you are in the `analysis` folder and run
 
 ~~~
 cd ~/cs_course/analysis/
-java -Xmx16G -jar /home/csuser/.miniconda3/share/pilon-1.24-0/pilon.jar --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
+pilon --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
+
 ~~~
 {: .bash}
 
