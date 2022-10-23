@@ -333,11 +333,11 @@ Once your prompt has returned you should also have a file named `short_read_alig
 ### Running Pilon
 Now we have generated the necessary input files we can finally run Pilon.
 
-**ER is the cd  needed???** First navigate into the `pilon` directory we created earlier when generating the required files.
-Pilon is installed on the AWS instance and can view the help documentation using:
+First navigate up(`..`)  to the `analysis` directory
+Pilon is installed on the AWS instance and we can view the help documentation using:
 
 ~~~
-cd pilon
+cd ..
 pilon --help
 ~~~
 {: .bash}
