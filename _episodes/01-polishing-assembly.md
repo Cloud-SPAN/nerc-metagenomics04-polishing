@@ -471,7 +471,6 @@ We can see there are many different options for pilon. We will be using the defa
 
 Check you are in the `analysis` folder and run
 
-**ER can we update this command so it can be used as `pilon` in the AMI???**
 ~~~
 cd ~/cs_course/analysis/
 java -Xmx16G -jar /home/csuser/.miniconda3/share/pilon-1.24-0/pilon.jar --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
