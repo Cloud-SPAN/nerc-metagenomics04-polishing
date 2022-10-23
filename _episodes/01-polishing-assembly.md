@@ -93,7 +93,7 @@ medaka_consensus -h
   - `-o` allows specify the output directory  
   - `-t` allows us to specify the number of threads so we can speed the process up
 
-The `medaka_consensus` polishing will take about 20 mins so we will run it in the background and redirect the output to a file.
+The `medaka_consensus` polishing will take about 30 mins so we will run it in the background and redirect the output to a file.
 Make sure you are in the `analysis` folder and run the `medaka_consensus` on `assembly.fasta`:
 ~~~
 cd analysis/
@@ -268,7 +268,7 @@ We will be using two pipes to join three separate steps. First we will align the
 5. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
-This will take around 30 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background.
+This will take around 60 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background.
 
 Add the pipes between these commands and run:
 ~~~
