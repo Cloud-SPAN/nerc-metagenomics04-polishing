@@ -326,7 +326,7 @@ samtools index short_read_alignment.bam
 > If we included this step as part of a pipe the intermediate BAM file would not be saved.
 {: .callout}
 
-This command will take around a minute so we don't need to run it in the background.
+This command will take around one or two minutes so we don't need to run it in the background.
 
 Once your prompt has returned you should also have a file named `short_read_alignment.bam.bai` which is the index.
 
