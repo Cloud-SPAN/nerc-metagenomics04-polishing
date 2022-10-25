@@ -94,7 +94,7 @@ medaka_consensus -h
   - `-t` allows us to specify the number of threads so we can speed the process up
 
 The `medaka_consensus` polishing will take about 30 mins so we will run it in the background and redirect the output to a file.
-Make sure you are in the `analysis` folder and run the `medaka_consensus` on `assembly.fasta`:
+Make sure you are in the `analysis` folder and run `medaka_consensus` on `assembly.fasta`:
 ~~~
 cd analysis/
 medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 8 &> medaka.out &
@@ -114,13 +114,12 @@ If it is successfully running you should see an output like:
 ~~~
 {: .output}
 
-
 We can also look in the output file (`medaka.out`) to check the progress of the command.
 ~~~
 less medaka.out
 ~~~
 {: .bash}
-If the medaka command has been run correctly you will see something like this at the start of the output:
+If the Medaka command has been run correctly you will see something like this at the start of the output:
 ~~~
 Checking program versions
 This is medaka 1.7.0
@@ -140,12 +139,23 @@ Constructing minimap index.
 ~~~
 {: .output}
 
+> ## Help!
+> Medaka may give you a warning along the lines of:
+> ~~~
+> 2022-10-25 09:07:35.970532: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+> 2022-10-25 09:07:35.970583: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+> 2022-10-25 09:07:39.935310: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+> 2022-10-25 09:07:39.935346: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+> ~~~
+> {: .output}
+> Don't worry, you can safely ignore this warning wherever it pops up. It is telling us that it couldn't load a library required for parallel computing using GPUs. We are not using a GPU setup and so this warning is irrelevant. 
+{: .callout} 
 
 Medaka first looks for the other programs that it needs (known as dependencies) and their versions. These dependencies are installed on the AWS instance. Once it confirms they are present, it begins by aligning the raw reads (basecalls) to the assembly using minimap.
 
-<kbd>q</kbd> will quite from `less`.
+<kbd>q</kbd> will quit from `less`.
 
-Once medaka has completed the end of the file will contain something like:
+Once Medaka has completed the end of the file will contain something like:
 ~~~
 less medaka.out
 ~~~
@@ -167,7 +177,7 @@ Polished assembly written to medaka/consensus.fasta, have a nice day.
 ~~~
 {: .output}
 
-Once medaka has completed we can navigate into the output directory and look at the files Medaka has generated.
+Once Medaka has completed we can navigate into the output directory and look at the files it has generated.
 
 ~~~
 cd medaka
@@ -465,7 +475,7 @@ pilon --help
 You can read more about the possible outputs Pilon can produce in the [Wiki](https://github.com/broadinstitute/pilon/wiki/Output-File-Descriptions).
 
 We can see there are many different options for pilon. We will be using the defaults for our assembly.
-* `--genome` - this will be the output assembly from medaka
+* `--genome` - this will be the output assembly from Medaka
 * `--unpaired` - the short reads we used to create the BAM alignment were unpaired, so we need to specify this using this flag
 * `--outdir` - this will generate a directory for all the output
 
