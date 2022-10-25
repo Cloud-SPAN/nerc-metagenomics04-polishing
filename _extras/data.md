@@ -2,44 +2,32 @@
 layout: page
 title: Data
 ---
-
-# Features of the dataset  
-
-This dataset was selected for several reasons:
-
-* It is a simple but iconic NGS problem - examining a population where we want to characterize changes in sequence *a priori*.
-* The dataset is publicly available - in this case through the [NCBI Sequence Read Archive](http://www.ncbi.nlm.nih.gov/sra).
-* File sizes are small - while several of related files may still be hundreds of MBs, overall we will be able to get through more quickly than if we worked with a larger eukaryotic genome.
-
 # Introduction to the dataset  
 
-Microbes are ideal organisms for exploring 'Long-term Evolution Experiments' (LTEEs) because thousands of generations can be generated and stored in a way that would be virtually impossible for more complex eukaryotic systems. 
+This course uses data from a mock metagenome community published from [Ultra-deep, long-read nanopore sequencing of mock microbial community standards](https://academic.oup.com/gigascience/article/8/5/giz043/5486468?login=true) which has long and short read sequencing data and has been used for benchmarking metagenome tools.
 
-In [Tenaillon et al 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4988878/), 12 populations of *Escherichia coli* were propagated for more than 50,000 generations in a glucose-limited minimal medium. This medium was supplemented with citrate which *E. coli* cannot metabolize in the aerobic conditions of the experiment. 
+A mock metagenome has been artificially constructed by combining known species at known quantities to form the community sample. This community contains eight bacteria and two yeasts. We use a mock metagenome like this one to simplify data analysis.
 
-Sequencing of the populations at regular time points reveals that spontaneous citrate-using mutants (Cit+) appeared in a population of *E.coli* (designated Ara-3) at around 31,000 generations. It should be noted that spontaneous Cit+ mutants are extraordinarily rare - inability to metabolize citrate is one of the defining characters of the *E. coli* species. Eventually, Cit+ mutants became the dominant population as the experimental growth medium contained a high concentration of citrate relative to glucose. 
+# Instance file hierarchy
 
-Around the same time that the Cit+ mutation emerged, another phenotype become prominent in the Ara-3 population. Many Ara-3 *E. coli* began to develop excessive numbers of mutations, meaning they became hypermutable. 
+The file structure of the cloud instance provided looks like this:
+![A diagram showing the file structure (described in more detail below)](../fig\initial_file_structure.png){:width="600px"}
 
-Strains from generation 0 to generation 50,000 were sequenced, including ones that were both Cit+ and Cit- and hypermutable in later generations.  
+The directory `cs_user` is your home directory. It contains the directories `bin`, `cs_course` and `software`.
 
-For the purposes of this workshop we're going to be working with 3 of the sequence reads from this experiment. 
+## `bin` directory
+The `bin` directory stores binary executables i.e. programs written in machine code for the computer to execute. This is how the shell knows how to execute the commands you tell it to. It's important not to modify anything in here! We won't be going into this directory.
 
-| SRA Run Number | Clone | Generation | Cit  | Hypermutable | Read Length | Sequencing Depth |
-| -------------- | ----- | ---------- | ---- | ----- |-------|--------| 
-| SRR2589044 | REL2181A | 5,000 | Unknown | None |  150 | 60.2 |
-| SRR2584863 | REL7179B | 15,000 | Unknown | None |  150 | 88 |
-| SRR2584866 | REL11365 | 50,000 | Cit+ | plus |  150 | 138.3 |
+## `software` directory
+The `software` directory is where the software programs we will be using for our analysis are stored. Again, it's important not to modify anything in here and we won't be going into it during this course.
 
-We want to be able to look at differences in mutation rates between hypermutable and non-hypermutable strains. We also want to analyse the sequences to figure out what changes occurred in genomes to make the strains Cit+. Ultimately, we will answer the questions:  
+## `cs_course` directory
+This is the directory we will be using during the course. It contains two subdirectories: `data` and `databases`.
 
-- How many base pair changes are there between the Cit+ and Cit- strains?  
-- What are the base pair changes between Cit+ and Cit- strains?  
+`data` contains subdirectories for short read data (`illumina_fastq`) and long read data (`nano_fastq`). These each contain a `.fastq` file which will form the basis of our analyses. The files contain lots of sequence reads.
+
+`databases` contains one subdirectory called `kraken_20220926`. We will need the files inside this subdirectory when we do taxonomic assigment using Kraken 2 - they make up a database containing many reference genomes against which we will compare our samples to identify them.
 
 ## References  
 
-Tenaillon O, Barrick JE, Ribeck N, Deatherage DE, Blanchard JL, Dasgupta A, Wu GC, Wielgoss S, Cruveiller S, Médigue C, Schneider D, Lenski RE.
-Tempo and mode of genome evolution in a 50,000-generation experiment (2016) Nature. 536(7615): 165–170.
-[Paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4988878/), [Supplemental materials](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4988878/#)  
-
-Data available on [NCBI SRA](https://trace.ncbi.nlm.nih.gov/Traces/sra/?study=SRP064605) and [EMBL-EBI ENA](https://www.ebi.ac.uk/ena/data/view/PRJNA295606).
+Samuel M Nicholls, Joshua C Quick, Shuiquan Tang, Nicholas J Loman, Ultra-deep, long-read nanopore sequencing of mock microbial community standards, GigaScience, Volume 8, Issue 5, May 2019, giz043, https://doi.org/10.1093/gigascience/giz043
