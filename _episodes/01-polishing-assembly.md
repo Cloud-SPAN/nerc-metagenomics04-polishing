@@ -90,7 +90,7 @@ medaka_consensus -h
   - `-d` indicates the assembly we are polishing
 * Other flags are optional
   - `-m` allows to select an apropriate recurrent neural network model. The [documentation](https://github.com/nanoporetech/medaka#models) describes the models which are named to indicate i) the pore type, ii) the sequencing device (MinION or PromethION), iii) the basecaller variant, and iv) the basecaller version, with the format: `{pore}_{device}_{caller variant}_{caller version}`. Medaka doesn't offer an exact model for our dataset. We will use the closest available model: `r941_prom_fast_g303`. It is also possible specify a bespoke model.  
-  - `-o` allows specify the output directory  
+  - `-o` allows us to specify the output directory  
   - `-t` allows us to specify the number of threads so we can speed the process up
 
 The `medaka_consensus` polishing will take about 30 mins so we will run it in the background and redirect the output to a file.
@@ -357,13 +357,13 @@ pilon --help
 >              for the bam alignments.  At least one of --frags or --jumps must also be given.
 >           --frags frags.bam
 >              A bam file consisting of fragment paired-end alignments, aligned to the --genome
->              argument using bwa or bowtie2.  This argument may be specifed more than once.
+>              argument using bwa or bowtie2.  This argument may be specified more than once.
 >           --jumps jumps.bam
 >              A bam file consisting of jump (mate pair) paired-end alignments, aligned to the
->              --genome argument using bwa or bowtie2.  This argument may be specifed more than once.
+>              --genome argument using bwa or bowtie2.  This argument may be specified more than once.
 >           --unpaired unpaired.bam
 >              A bam file consisting of unpaired alignments, aligned to the --genome argument
->              using bwa or bowtie2.  This argument may be specifed more than once.
+>              using bwa or bowtie2.  This argument may be specified more than once.
 >           --bam any.bam
 >              A bam file of unknown type; Pilon will scan it and attempt to classify it as one
 >              of the above bam types.
@@ -407,7 +407,7 @@ pilon --help
 >              The following are experimental fix types:
 >                "amb": fix ambiguous bases in fasta output (to most likely alternative);
 >                "breaks": allow local reassembly to open new gaps (with "local");
->                "circles": try to close circlar elements when used with long corrected reads;
+>                "circles": try to close circular elements when used with long corrected reads;
 >                "novel": assemble novel sequence from unaligned non-jump reads.
 >           --dumpreads
 >              Dump reads for local re-assemblies.
