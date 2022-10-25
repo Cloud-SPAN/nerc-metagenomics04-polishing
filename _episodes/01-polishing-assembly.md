@@ -500,7 +500,7 @@ Finished processing contig_47:1-12303
 ~~~
 {: .output}
 
-When Pilon finishes the end of the file will contain something like:
+When Pilon finishes (aroud 20 mins) the end of the file will contain something like:
 ~~~
 Writing updated contig_86_pilon to pilon.fasta
 Writing updated contig_90_pilon to pilon.fasta
