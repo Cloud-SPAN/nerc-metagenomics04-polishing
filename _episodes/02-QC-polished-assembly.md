@@ -440,7 +440,7 @@ metaquast.py -h
 > {: .output}
 {: .solution}
 
-From this we can see we need `--references-list` to supply our list of reference organisms (this is the file we just made called `reference_genomes.txt`), followed by our three assemblies separated by a space. 
+From this we can see we need `--references-list` to supply our list of reference organisms (this is the file we just made called `reference_genomes.txt`), followed by our three assemblies separated by a space.
 ~~~
 metaquast.py --references-list reference_genomes.txt ../assembly/assembly.fasta ../medaka/consensus.fasta ../pilon/pilon.fasta
 ~~~
@@ -533,7 +533,7 @@ If you haven't managed to download the file you can view our example [report.htm
 
 You should take a few minutes to explore the file before answering the following exercise.
 
-<img align="centre" width="500" height="489" src="{{ page.root }}/fig/05-metaquast_output.png" alt="MetaQUAST statistics output" />
+<img align="centre" width="505" height="416" src="{{ page.root }}/fig/05-metaquast_output.png" alt="MetaQUAST statistics output" />
 
 ### Understanding metaQUAST output
 
