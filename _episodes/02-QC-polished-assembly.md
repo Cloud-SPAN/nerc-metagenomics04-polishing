@@ -522,7 +522,7 @@ However, most of this information is in the `report.html` file so we can downloa
 As this is a HTML file we will first need to download it to our local computer in order to open it.
 
 ~~~
-scp -i login-key-instanceNNN.pem csuser@instanceNNN.cloud-span.aws.york.ac.uk:~/cs_course/analysis/metaquast/results_YYYY_MM_DD_HH_MM_SS/report.html .
+scp -i login-key-instanceNNN.pem csuser@instanceNNN.cloud-span.aws.york.ac.uk:~/cs_course/analysis/metaquast/quast_results/results_YYYY_MM_DD_HH_MM_SS/report.html .
 ~~~
 {: .bash}
 
