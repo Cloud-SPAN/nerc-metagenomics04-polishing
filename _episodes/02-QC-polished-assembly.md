@@ -224,7 +224,7 @@ cd ~/cs_course/analysis/
 mkdir metaquast
 cd metaquast
 ~~~
-{: .output}
+{: .code}
 
 To open nano we type the command `nano` followed by the name of the text file we want to generate.
 
