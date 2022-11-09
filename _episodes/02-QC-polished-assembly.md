@@ -121,8 +121,8 @@ It indicates the average size of the contigs the assembly software has produced.
 > Bonus exercise: What flag would enable us to save the output table in a tabular (i.e. tsv) format?
 >> ## Solution
 >> a) We can see from the help documentation that the flag `-a` or `--all` will calculate `all statistics, including quartiles of seq length, sum_gap, N50`.  
->> b) The new command would be `seqkit stats -a assembly.fasta` or `seqkit stats --all assembly.fasta`  
->> Bonus: The flag `-T` allows us to save it in a tabular output - this makes the table easier to use in other command line programs or programming languages such as R and Python. The command could be either `seqkit stats -a -T assembly.fasta` or we can combine the two flags `seqkit stats -aT assembly.fasta`
+>> b) The new command would be `seqkit stats -a assembly/assembly.fasta` or `seqkit stats --all assembly/assembly.fasta`  
+>> Bonus: The flag `-T` allows us to save it in a tabular output - this makes the table easier to use in other command line programs or programming languages such as R and Python. The command could be either `seqkit stats -a -T assembly/assembly.fasta` or we can combine the two flags `seqkit stats -aT assembly/assembly.fasta`
 > {: .solution}
 {: .challenge}
 
