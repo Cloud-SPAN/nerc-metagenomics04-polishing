@@ -258,7 +258,7 @@ Staphylococcus aureus
 ~~~
 {: .bash}
 
-Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You will the be prompted with `File Name to Write: reference_genomes.txt` as we named the file when we first used the command we don't need to change this name and can press enter to save the file. Once our file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
+Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You will the be prompted with `File Name to Write: reference_genomes.txt` as we named the file when we first used the command we don't need to change this name and can press <kbd>Enter</kbd> to save the file. Once our file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
 return to the shell.
 
 > ## Control, Ctrl, or ^ Key
