@@ -90,4 +90,4 @@ exclude:
 # Turn off built-in syntax highlighting.
 highlighter: rouge
 
-remote_theme: Cloud-SPAN/nerc-metagenomics-themexs
+remote_theme: Cloud-SPAN/nerc-metagenomics-theme
