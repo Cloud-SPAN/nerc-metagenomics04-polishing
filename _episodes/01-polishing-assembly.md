@@ -263,7 +263,7 @@ We will first use the program [BWA](https://github.com/lh3/bwa) to generate an a
 1. indexing the polished assembly, consensus.fasta with `bwa index`. Indexing allows the aligner to quickly find potential alignment sites for query sequences in a genome, which saves time during alignment.
 2. creating a directory for the outputs of Pilon
 3. aligning the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`
-4. converting the short read alignment alignment to a BAM file `samtools view`
+4. converting the short read alignment to a BAM file `samtools view`
 5. sorting the short read alignment with `samtools sort`
 6. indexing the short read alignment with `samtools index`
 
@@ -301,7 +301,7 @@ cd pilon
 We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 
 > ## Chaining together commands with a pipe
-> It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed as input to the next without the need for intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe character is `|` and obtainined with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
+> It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed as input to the next without the need for intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe character is `|` and obtained with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
 >
 > You can use multiple pipes in one command but data will only go from the left to the right:
 >
@@ -311,7 +311,7 @@ We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 We will be using two pipes to join three separate steps. First we will align the raw reads to the draft assembly, then convert the output to BAM format, before finally sorting this alignment to generate a sorted BAM file. Chaining the steps together together will only generate one final output file, avoiding the need to generate large intermediary files we don't need again between the other two steps.
 
 3. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
-   `bwa mem -t 8 consensus.fasta ../data/illumina_fastq/ERR2935805.fastq`
+   `bwa mem -t 8 ~/cs_course/analysis/medaka/consensus.fasta ~/cs_course/data/illumina_fastq/ERR4998593_1.fastq ~/cs_course/data/illumina_fastq/ERR4998593_2.fastq`
 4. convert the short read alignment alignment to a BAM file `samtools view`:
    `samtools view - -Sb`
 5. sort the short read alignment with `samtools sort`:
@@ -321,11 +321,11 @@ This will take around 60 minutes so we will use `&> alignment.out &` to redirect
 
 Add the pipes between these commands and run:
 ~~~
-(bwa mem -t 8 ../medaka/consensus.fasta ../../data/illumina_fastq/ERR2935805.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam) &> alignment.out &
+(bwa mem -t 8 ~/cs_course/analysis/medaka/consensus.fasta ~/cs_course/data/illumina_fastq/ERR4998593_1.fastq ~/cs_course/data/illumina_fastq/ERR4998593_2.fastq | samtools view - -Sb | samtools sort - -@4 -o short_read_alignment.bam) &> alignment.out &
 ~~~
 {: .bash}
 
-Once the command is running, you can check the process of this job by looking at the `alignment.out` file
+Once the command is running, you can check the process of this job by looking at the `alignment.out` file. 
 ~~~
 less alignment.out
 ~~~
@@ -333,32 +333,32 @@ less alignment.out
 
 ~~~
 [M::bwa_idx_load_from_disk] read 0 ALT contigs
-[M::process] read 8758 sequences (40002050 bp)...
-[M::process] read 8872 sequences (40001127 bp)...
-[M::mem_process_seqs] Processed 8758 reads in 134.856 CPU sec, 33.785 real sec
-[M::process] read 8774 sequences (40005021 bp)...
-[M::mem_process_seqs] Processed 8872 reads in 138.347 CPU sec, 34.631 real sec
-[M::process] read 8736 sequences (40009331 bp)...
-[M::mem_process_seqs] Processed 8774 reads in 130.086 CPU sec, 32.545 real sec
-[M::process] read 8848 sequences (40002710 bp)...
-[M::mem_process_seqs] Processed 8736 reads in 132.912 CPU sec, 33.277 real sec
-[M::process] read 8884 sequences (40009423 bp)...
-[M::mem_process_seqs] Processed 8848 reads in 134.169 CPU sec, 33.883 real sec
-[M::process] read 8902 sequences (40003755 bp)...
-[M::mem_process_seqs] Processed 8884 reads in 129.038 CPU sec, 32.410 real sec
-[M::process] read 8760 sequences (40000601 bp)...
-~~~
+[M::process] read 529802 sequences (80000102 bp)...
+[M::process] read 529802 sequences (80000102 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (2, 14035, 29, 8)
+[M::mem_pestat] skip orientation FF as there are not enough pairs
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (333, 416, 538)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 948)
+[M::mem_pestat] mean and std.dev: (435.53, 162.74)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1153)
+[M::mem_pestat] analyzing insert size distribution for orientation RF...
+[M::mem_pestat] (25, 50, 75) percentile: (891, 2304, 6802)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 18624)
+[M::mem_pestat] mean and std.dev: (3479.45, 2918.28)
 {: .output}
-Once completed, the end of the `alignment.out` file should contain something like:
+
+The command should take around 45 minutes to run. Once completed, the end of the `alignment.out` file should contain something like:
 ~~~
-[M::mem_process_seqs] Processed 8862 reads in 117.475 CPU sec, 29.369 real sec
-[M::process] read 4795 sequences (23206538 bp)...
-[M::mem_process_seqs] Processed 8610 reads in 125.241 CPU sec, 31.397 real sec
-[M::mem_process_seqs] Processed 4795 reads in 87.225 CPU sec, 23.866 real sec
+low and high boundaries for proper pairs: (1, 1222)
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+[M::mem_process_seqs] Processed 182762 reads in 37.961 CPU sec, 5.397 real sec
 [main] Version: 0.7.17-r1188
-[main] CMD: bwa mem -t 8 consensus.fasta ../ERR3152367_sub5_filtered.fastq
-[main] Real time: 2454.659 sec; CPU: 9557.109 sec
-[bam_sort_core] merging from 4 files and 4 in-memory blocks...
+[main] CMD: bwa mem -t 8 ~/cs_course/analysis/medaka/consensus.fasta ~/cs_course/data/illumina_fastq/ERR4998593_1.fastq ~/cs_course/data/illumina_fastq/ERR4998593_2.fastq
+[main] Real time: 2207.540 sec; CPU: 14851.383 sec
+[bam_sort_core] merging from 7 files and 4 in-memory blocks...
+
 ~~~
 {: .output}
 We have now generated the `short_read_alignment.bam` file - this is a binary file (meaning it's not human readable) so we won't be checking its contents.
@@ -382,11 +382,9 @@ Once your prompt has returned you should also have a file named `short_read_alig
 ### Running Pilon
 Now we have generated the necessary input files we can finally run Pilon.
 
-First navigate up(`..`)  to the `analysis` directory
 Pilon is installed on the AWS instance and we can view the help documentation using:
 
 ~~~
-cd ..
 pilon --help
 ~~~
 {: .bash}
@@ -515,14 +513,14 @@ You can read more about the possible outputs Pilon can produce in the [Wiki](htt
 
 We can see there are many different options for pilon. We will be using the defaults for our assembly.
 * `--genome` - this will be the output assembly from Medaka
-* `--unpaired` - the short reads we used to create the BAM alignment were unpaired, so we need to specify this using this flag
-* `--outdir` - this will generate a directory for all the output
+* `--frags` - the short reads we used to create the BAM alignment were paired, so we need to specify this using this flag
+* `--outdir` - this specifies a directory for all the output
 
-Check you are in the `analysis` folder and run
+Check you are in the `analysis` folder and run Pilon:
 
 ~~~
 cd ~/cs_course/analysis/
-pilon --genome medaka/consensus.fasta --unpaired pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
+pilon --genome medaka/consensus.fasta --frags pilon/short_read_alignment.bam --outdir pilon &> pilon.out &
 
 ~~~
 {: .bash}
@@ -532,32 +530,38 @@ We can again keep track of the analysis by looking at the `pilon.out` file with 
 The top of the file:  
 ~~~
 Pilon version 1.24 Thu Jan 28 13:00:45 2021 -0500
-Genome: ../medaka/consensus.fasta
+Genome: medaka/consensus.fasta
 Fixing snps, indels, gaps, local
-Input genome size: 14961385
+Input genome size: 18930486
 Scanning BAMs
-short_read_alignment.bam: 97413971 reads, 0 filtered, 97027227 mapped, 0 proper, 0 stray, Unpaired 100% 147+/-55, max 313
-Processing contig_47:1-12303
-unpaired short_read_alignment.bam: coverage 3
-Total Reads: 532, Coverage: 3, minDepth: 5
-Confirmed 3506 of 12303 bases (28.50%)
-Corrected 25 snps; 0 ambiguous bases; corrected 18 small insertions totaling 22 bases, 28 small deletions totaling 32 bases
+short_read_alignment.bam: 68579742 reads, 0 filtered, 7344428 mapped, 6036898 proper, 167134 stray, FR 100% 401+/-206, max 1018
+Processing contig_1057:1-17080
+frags short_read_alignment.bam: coverage 36
+Total Reads: 9147, Coverage: 36, minDepth: 5
+Confirmed 10586 of 17080 bases (61.98%)
+Corrected 234 snps; 40 ambiguous bases; corrected 22 small insertions totaling 38 bases, 101 small deletions totaling 141 bases
 # Attempting to fix local continuity breaks
-# fix break: contig_47:10552-11713 0 -0 +0 NoSolution
-contig_47:1-12303 log:
-Finished processing contig_47:1-12303
+# fix break: contig_1057:780-2830 0 -0 +0 NoSolution
+# fix break: contig_1057:3081-4075 0 -0 +0 NoSolution
+# fix break: contig_1057:4312-5132 0 -0 +0 NoSolution
+# fix break: contig_1057:5367-5452 0 -0 +0 NoSolution
+# fix break: contig_1057:5798-6336 0 -0 +0 NoSolution
+# fix break: contig_1057:6798-8683 0 -0 +0 NoSolution
+# fix break: contig_1057:8886-9132 0 -0 +0 NoSolution
+# fix break: contig_1057:9394-12244 0 -0 +0 NoSolution
+
 ~~~
 {: .output}
 
-When Pilon finishes (aroud 20 mins) the end of the file will contain something like:
+When Pilon finishes (aroud 1.5 hours) the end of the file will contain something like:
 ~~~
-Writing updated contig_86_pilon to pilon.fasta
-Writing updated contig_90_pilon to pilon.fasta
-Writing updated contig_30_pilon to pilon.fasta
-Writing updated contig_136_pilon to pilon.fasta
-Writing updated contig_107_pilon to pilon.fasta
-Mean unpaired coverage: 535
-Mean total coverage: 535
+Writing updated contig_1125_pilon to ./pilon.fasta
+Writing updated contig_885_pilon to ./pilon.fasta
+Writing updated contig_1130_pilon to ./pilon.fasta
+Writing updated contig_1121_pilon to ./pilon.fasta
+Writing updated contig_697_pilon to ./pilon.fasta
+Mean frags coverage: 30
+Mean total coverage: 30
 ~~~
 {: .output}
 
