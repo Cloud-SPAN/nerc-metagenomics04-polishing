@@ -86,6 +86,8 @@ medaka_consensus -h
 
 To use Medaka we need to specify certain parameters in the command, like we did when we ran Flye last session. The help page tells us that the basic format for medaka is `medaka_consensus [-h] -i <fastx> -d <fasta>1`, indicating that the `-i` and `-d` flags are mandatory.
 
+Let's have a look at the flags and options we're going to use:
+
 | Flag/option | Meaning                                                                                                       | Our input                                                  |
 |-------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
 | `-i`        | Input basecalls (i.e. what we are polishing with)                                                             | `-i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered` |
@@ -94,14 +96,28 @@ To use Medaka we need to specify certain parameters in the command, like we did 
 | `-o`        | Output directory                                                                                              | `-o medaka`                                                |
 | `-t`        | Number of threads                                                                                             | `-t 8`                                                     |
 
-Once again we will run this command in the background and redirect the output to a file. This means we add `&> medaka.out` to redirect the output and `&` to the very end to run in the background.
+Once again we will run this command in the background and redirect the output to a file. This means we add `&> medaka.out` to redirect the output and `&` to the very end to make it run in the background.
 
-Here is the full command. Before running it, make sure you start in the `analysis` folder.
+Before we start let's make sure we're in the `analysis` folder and create a directory called `medaka` for our output.
+
 ~~~
-cd analysis/
-medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 8 &> medaka.out &
+cd ~/cs_course/analysis/
+mkdir medaka
 ~~~
 {: .bash}
+
+Now it's time to run Medaka!
+~~~
+medaka_consensus \
+-i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered.fastq \
+-d assembly/assembly.fasta \
+-m r941_min_hac_g507 \
+-o medaka \
+-t 8 \
+&> medaka.out &
+~~~
+{: .bash}
+
 We have added `&> medaka.out &` to redirect the output to `medaka.out `and run the command in the background.  
 
 We can check the command is running using `jobs`:
@@ -153,17 +169,38 @@ Constructing minimap index.
 > Don't worry, you can safely ignore this warning wherever it pops up. It is telling us that it couldn't load a library required for parallel computing using GPUs. We are not using a GPU setup and so this warning is irrelevant. 
 {: .callout} 
 
+> ## Help!
+> If you have entered the command incorrectly you will usually find out quite quickly! An easy way to tell is if you get an output in your terminal that starts with 'Exit' rather than 'Done':
+> ~~~
+> [1]+  Exit 1                  medaka_consensus -i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered.fastq -d assembly/assembly.fasta -m r941_min_hac_g507 -o medaka -t 8 &> medaka.out
+> ~~~
+> {: .output}
+>
+> Another way to tell is by looking inside the `medaka.out` log file. You will get some of the usual text output as Medaka loads its dependencies but once it starts processing the command it will tell you that something is wrong, e.g.
+> ~~~
+> Creating fai index file /home/csuser/cs_course/analysis/assembly/assembly.fasta.fai
+> [E::fai_build3_core] Failed to open the file /home/csuser/cs_course/analysis/assembly/assembly.fasta
+> [faidx] Could not build fai index /home/csuser/cs_course/analysis/assembly/assembly.fasta.fai
+> Failed to run alignment of reads to draft.
+> ~~~
+> {: .output}
+> 
+> Things to check if your command fails:
+> - spelling/typos - have you spelled the command correctly and typed the directory names without error?
+> - paths - are all of your absolute/relative paths complete and accurate? (tip: using tab completion can help with peace of mind here, as you can check that your path definitely follows the right trail)
+> - flags - have you included all the mandatory flags, including the one (`-`) or two (`--`) dashes that usually accompany them?
+> - output - does the output in your log/.out file give you any clues as to where your error lies? e.g. in the example above the line "Failed to open the file /home/csuser/cs_course/analysis/assembly/assembly.fasta" suggests that this path might be wrong somehow.
+>
+> If you really can't find your mistake then the your instructors and/or other participants will be able to help you sort it out, so there is no need to panic!
+{: .callout} 
+
 Medaka first looks for the other programs that it needs (known as dependencies) and their versions. These dependencies are installed on the AWS instance. Once it confirms they are present, it begins by aligning the raw reads (basecalls) to the assembly using minimap.
 
-<kbd>q</kbd> will quit from `less`.
-
-Once Medaka has completed the end of the file will contain something like:
+Once Medaka has completed the end of the file (which you can skip to by typing <kbd>G</kbd>) will contain something like:
 ~~~
 less medaka.out
 ~~~
 {: .bash}
-
-<kbd>G</kbd>  will take you to the end   
 ~~~
 [20:51:16 - DataIndx] Loaded 1/1 (100.00%) sample files.
 [20:51:16 - DataIndx] Loaded 1/1 (100.00%) sample files.
@@ -230,7 +267,7 @@ We will first use the program [BWA](https://github.com/lh3/bwa) to generate an a
 5. sorting the short read alignment with `samtools sort`
 6. indexing the short read alignment with `samtools index`
 
-Make sure are in the `analysis` folder and index the consensus assembly:
+Make sure you are in the `analysis` folder and use `bwa index` to index the consensus assembly:
 ~~~
 cd ~/cs_course/analysis/
 bwa index medaka/consensus.fasta
