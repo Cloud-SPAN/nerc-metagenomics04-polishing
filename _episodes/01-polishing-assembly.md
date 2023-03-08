@@ -26,21 +26,20 @@ Long reads can span regions which would would difficult to assemble with short r
 2. Polishing with short reads using [Pilon](https://github.com/broadinstitute/pilon) which uses the more accurate short read data to correct incorrectly called bases in the assembly.
 More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
 
-<img align="left" width="525" height="307" src="{{ page.root }}/fig/04_polishing_diagram_v1.png" alt="Diagram showing overlap of reads for polishing" /> &nbsp; &nbsp; &nbsp;
+#### Polishing with short reads
 
-**Polishing with short reads**
+<img width="525" height="307" src="{{ page.root }}/fig/04_polishing_diagram_v1.png" alt="Diagram showing overlap of reads for polishing" /> &nbsp; &nbsp; &nbsp;
+
 In the diagram, the long read assembly is shown at the top. The four short reads shown below the assembly have been aligned to it. The third position in the assembly is `A` but the three short reads that cover this region contain a `T`. The assembly probably contains a miscalled base but it can be corrected - or polished - at this position with the higher accuracy short read information. Typically short read polishing would be carried out three times with the base accuracy increasing each time. However, to reduce the compute requirements and the time required to finish the assembly, we will be performing it just once.
-
-<br clear="left"/>
 
 ## Why bother polishing?
 How important polishing is to your analysis will depend on what you need it for. Usually we generate metagenome assemblies so we can compare the sequences to a database and find out what taxa they belong to.
 
-You might NOT need to polish your assembly if:
+You might **NOT** need to polish your assembly if:
 - you only need to taxa to the genus level (meaning single incorrect bases are not important)
 
-You DO need to polish your assembly if:
-- you want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/metagenomics03-taxonomic-anno/) later in the course.
+You **DO** need to polish your assembly if:
+- you want to identify taxa to the species level (if possible). This is a common requirement since one of the main advantages of whole genome sequencing over amplicon sequencing is that you can assign annotations to the species level.  We will cover [Taxonomic annotations](https://cloud-span.github.io/nerc-metagenomics06-taxonomic-anno/) later in the course.
 - you want to generate protein predictions or identify protein structure domains to determine the functionality of metagenomes. This is discussed in more detail in Watson and Warr (2019): [Errors in long-read assemblies can critically affect protein prediction](https://www.nature.com/articles/s41587-018-0004-z).   
 
 ## Polishing an assembly with long reads
@@ -51,7 +50,7 @@ First we will polish the draft Flye assembly using the filtered raw long reads. 
 
 We will be using one Medaka command, `medaka_consensus`. This pipeline will first align the raw reads to the draft assembly, then process this alignment to generate a pileup. The pileup is presented to a recurrent neural network in order to produce a consensus sequence.
 
-Medaka is installed on the AWS instance. Look at the help page for `medaka_consensus`:
+Medaka is installed on the AWS instance. Let's take a look at the help page for `medaka_consensus`:
 
 ~~~
 medaka_consensus -h
@@ -85,16 +84,19 @@ medaka_consensus -h
 > {: .output}
 {: .solution}
 
-* The usage is `medaka_consensus [-h] -i <fastx> -d <fasta>` indicating that the `-i` and `-d` flags are mandatory.
-  - `-i` indicates the input basecalls _i.e._, the Nanopore raw-reads, what we are polishing with.
-  - `-d` indicates the assembly we are polishing
-* Other flags are optional
-  - `-m` allows to select an apropriate recurrent neural network model. The [documentation](https://github.com/nanoporetech/medaka#models) describes the models which are named to indicate i) the pore type, ii) the sequencing device (MinION or PromethION), iii) the basecaller variant, and iv) the basecaller version, with the format: `{pore}_{device}_{caller variant}_{caller version}`. Medaka doesn't offer an exact model for our dataset. We will use the closest available model: `r941_prom_fast_g303`. It is also possible specify a bespoke model.  
-  - `-o` allows us to specify the output directory  
-  - `-t` allows us to specify the number of threads so we can speed the process up
+To use Medaka we need to specify certain parameters in the command, like we did when we ran Flye last session. The help page tells us that the basic format for medaka is `medaka_consensus [-h] -i <fastx> -d <fasta>1`, indicating that the `-i` and `-d` flags are mandatory.
 
-The `medaka_consensus` polishing will take about 30 mins so we will run it in the background and redirect the output to a file.
-Make sure you are in the `analysis` folder and run `medaka_consensus` on `assembly.fasta`:
+| Flag/option | Meaning                                                                                                       | Our input                                                  |
+|-------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| `-i`        | Input basecalls (i.e. what we are polishing with)                                                             | `-i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered` |
+| `-d`        | Input assembly (i.e. what is being polished)                                                                  | `-d ~/cs_course/analysis/assembly/assembly.fasta`          |
+| `-m`        | Neural network model to use (described in [the documentation](https://github.com/nanoporetech/medaka#models)) | `-m r941_min_hac_g507`                                     |
+| `-o`        | Output directory                                                                                              | `-o medaka`                                                |
+| `-t`        | Number of threads                                                                                             | `-t 8`                                                     |
+
+Once again we will run this command in the background and redirect the output to a file. This means we add `&> medaka.out` to redirect the output and `&` to the very end to run in the background.
+
+Here is the full command. Before running it, make sure you start in the `analysis` folder.
 ~~~
 cd analysis/
 medaka_consensus -i ../data/nano_fastq/ERR3152367_sub5_filtered.fastq -d assembly/assembly.fasta -m r941_prom_fast_g303 -o medaka -t 8 &> medaka.out &
