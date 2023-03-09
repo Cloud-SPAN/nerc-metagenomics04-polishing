@@ -21,7 +21,7 @@ keypoints:
 ---
 
 ## Why QC a metagenome assembly?
-We now have a polished assembly. The next thing to do is to perform quality control (QC) checks to make sure we can be confident in our results and conclusions about the taxonomic, metabolic or functional composition of the communities that we are studying. This also allows us to check whether our efforts to improve the assembly with polishing were successful.
+We now have a polished assembly (`pilon.fasta`). The next thing to do is to perform quality control (QC) checks to make sure we can be confident in our results and conclusions about the taxonomic, metabolic or functional composition of the communities that we are studying. This also allows us to check whether our efforts to improve the assembly with polishing were successful.
 
 The quality of metagenome assemblies is typically lower than it is for single genome assemblies due to the use of long reads.
 
@@ -45,7 +45,7 @@ A duplication is when there is more than one copy of a particular region of the 
 
 ### Degree of completeness
 
-The more complete an assembly, the higher quality it is. Sometimes there an regions of the assembly that are unexpectedly missing, meaning the metagenome is incomplete.
+The more complete an assembly, the higher quality it is. Sometimes there are regions of the assembly that are unexpectedly missing, meaning the metagenome is incomplete.
 
 ### Chimeric Contigs
 
@@ -61,9 +61,8 @@ Low base quality happens when mutations are present in reads that do not reflect
 
 After finishing the draft assembly we used `seqkit stats` to see some basic statistics about the assembly. We will be using it again to get summary statistics for all three of the assemblies (unpolished, long read polished and short read polished). We can then use those statistics to examine the polishing process.
 
-We can review the help documentation for seqkit stats.
+Let's review the help documentation for seqkit stats.
 ~~~
-cd ~/cs_course/analysis/
 seqkit stats --help
 ~~~
 {: .bash}
@@ -130,26 +129,25 @@ Next, run the command on the original draft assembly (`~/cs_course/analysis/asse
 
 > ## Hint: Seqkit stats N50 command
 > ~~~
-> seqkit stats -a assembly/assembly.fasta
+> cd ~/cs_course/analysis/assembly
+> seqkit stats -a assembly.fasta
 > ~~~
 {: .solution}
 
 
 > ## Exercise 2: Calculating the N50 length
-> a) What is the output if we run the new command from the above exercise?  
-> b) What new statistics do we get that we didn't have with the original command?  
-> c) What is the N50 length of this assembly?  
+> a) What is the output if we run the new command from the above exercise?   
+> b) What is the N50 length of this assembly?  
 >  
 > Bonus exercise: Looking at the [information available online for Seqkit stats](https://bioinf.shenwei.me/seqkit/usage/#stats), can you work out what the extra statistics other than N50 tell us?
 >> ## Solution
 >> a)
 >> ~~~
->> file                     format  type  num_seqs     sum_len  min_len   avg_len    max_len     Q1      Q2      Q3  sum_gap        N50  Q20(%)  Q30(%)  GC(%)
->> assembly/assembly.fasta  FASTA   DNA        154  15,042,667    3,164  97,679.7  6,068,626  7,305  13,291  34,356        0  2,976,488       0       0  52.39
+>> file            format  type  num_seqs     sum_len  min_len   avg_len  max_len     Q1      Q2      Q3  sum_gap     N50  Q20(%)  Q30(%)  GC(%)
+>> assembly.fasta  FASTA   DNA      1,161  18,872,828      528  16,255.7  118,427  7,513  11,854  19,634        0  20,921       0       0  66.26
 >> ~~~
 >> {: .output}
->> b) Comparing the header line from this command to the original command we can see we've now got statistics for Q1, Q2, Q3, sum_gap, N50, Q20(%) and Q30(%)  
->> c) The N50 length for this assembly is 2,976,503 bp. This tells us that 50% of the assembly is in fragments that are almost 3m bases long or longer!
+>> a) The N50 length for this assembly is 20,921 bp. This tells us that 50% of the assembly is in fragments that are nearly 21,000 bases long or longer!
 >>  
 >> Bonus: `Q1`, `Q2` and `Q3` are the quartile ranges of sequence length. `sum_gap` is the total number of ambiguous bases (N's) in the sequence. `Q20`(%) is the percentage of bases with a PHRED score over 20 and similarly `Q30`(%) is the percentage of bases with a PHRED score over 30. GC(%) is the [guanine-cytosine content](https://en.wikipedia.org/wiki/GC-content) of the sequence.
 > {: .solution}
@@ -177,22 +175,27 @@ seqkit stats -a assembly/assembly.fasta medaka/consensus.fasta pilon/pilon.fasta
 ~~~
 {: .bash}
 
+file                                                             format  type  num_seqs     sum_len  min_len   avg_len  max_len     Q1      Q2      Q3  sum_gap     N50  Q20(%)  Q30(%)  GC(%)
+assembly/assembly_ERR5000342_sub15/assembly.fasta                FASTA   DNA      1,161  18,872,828      528  16,255.7  118,427  7,513  11,854  19,634        0  20,921       0       0  66.26
+medaka/medaka_ERR5000342_sub15/consensus_ERR5000342_sub15.fasta  FASTA   DNA      1,161  18,930,486      526  16,305.3  118,702  7,517  11,935  19,681        0  20,969       0       0  65.91
+pilon/pilon_ERR5000342_sub15/pilon_ERR5000342_sub15.fasta        FASTA   DNA      1,161  18,828,558      526  16,217.5  117,903  7,495  11,861  19,467        0  20,849       0       0  65.86
 
-| file                    | format | type | num_seqs | sum_len  | min_len | avg_len | max_len | Q1     | Q2      | Q3      | sum_gap | N50     | Q20(%) | Q30(%) | GC(%) |
-|-------------------------|--------|------|----------|----------|---------|---------|---------|--------|---------|---------|---------|---------|--------|--------|-------|
-| assembly/assembly.fasta | FASTA  | DNA  | 154      | 15042667 | 3164    | 97679.7 | 6068626 | 7305.0 | 13291.0 | 34356.0 | 0       | 2976488 | 0.00   | 0.00   | 52.39 |
-| medaka/consensus.fasta  | FASTA  | DNA  | 154      | 15062138 | 3142    | 97806.1 | 6074421 | 7166.0 | 13265.5 | 34010.0 | 0       | 2991856 | 0.00   | 0.00   | 52.30 |
-| pilon/pilon.fasta       | FASTA  | DNA  | 154      | 15070837 | 3144    | 97862.6 | 6074532 | 7175.0 | 13279.5 | 34010.0 | 0       | 2992063 | 0.00   | 0.00   | 52.27 |
+
+| file                    | format | type | num_seqs | sum_len    | min_len| avg_len  | max_len | Q1    | Q2     | Q3     | sum_gap | N50    | Q20(%) | Q30(%) | GC(%) |
+|-------------------------|--------|------|----------|------------|--------|----------|---------|-------|--------|--------|---------|--------|--------|--------|-------|
+| assembly/assembly.fasta | FASTA  | DNA  | 1,161    | 18,872,828 | 528    | 16,255.7 | 118,427 | 7,513 | 11,854 | 19,634 | 0       | 20,921 | 0.00   | 0.00   | 66.26 |
+| medaka/consensus.fasta  | FASTA  | DNA  | 1,161    | 18,930,486 | 526    | 16,305.3 | 118,702 | 7,517 | 11,935 | 19,681 | 0       | 20,969 | 0.00   | 0.00   | 65.91 |
+| pilon/pilon.fasta       | FASTA  | DNA  | 1,161    | 18,828,558 | 526    | 16,217.5 | 117,903 | 7,495 | 11,861 | 19,467 | 0       | 20,849 | 0.00   | 0.00   | 65.86 |
 
 > ## Exercise 3: Comparing the Assemblies
 > Using the seqkit output for all three assemblies, compare the statistics for each of the three assemblies. What has changed across the two rounds of polishing? (From assembly>medaka>pilon)
 >
 > > ## Solution
 > > Between the original assembly and the medaka polished assembly:
-> > - Total length, maximum length and average length have all increased as has the N50, the minimum length and GC content have decreased as has the quartile range of lengths.  
+> > - Total length, maximum length and average length have all increased as has the N50. The minimum length and GC content have decreased as has the quartile range of lengths.  
 > >
 > > Between the medaka polished assembly and the pilon polished assembly:
-> > - The total length, average length, maximum length, Q1, Q2, minimum length and N50 have all increased. The GC% and Q3 have decreased.
+> > - All variables have either decreased in length or stayed the same (number of sequences and minimum length).
 > {: .solution}
 {: .challenge}
 
