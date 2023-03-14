@@ -346,9 +346,11 @@ less alignment.out
 [M::mem_pestat] (25, 50, 75) percentile: (891, 2304, 6802)
 [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 18624)
 [M::mem_pestat] mean and std.dev: (3479.45, 2918.28)
+~~~
 {: .output}
 
 The command should take around 45 minutes to run. Once completed, the end of the `alignment.out` file should contain something like:
+
 ~~~
 low and high boundaries for proper pairs: (1, 1222)
 [M::mem_pestat] skip orientation RF as there are not enough pairs
@@ -358,9 +360,9 @@ low and high boundaries for proper pairs: (1, 1222)
 [main] CMD: bwa mem -t 8 ~/cs_course/analysis/medaka/consensus.fasta ~/cs_course/data/illumina_fastq/ERR4998593_1.fastq ~/cs_course/data/illumina_fastq/ERR4998593_2.fastq
 [main] Real time: 2207.540 sec; CPU: 14851.383 sec
 [bam_sort_core] merging from 7 files and 4 in-memory blocks...
-
 ~~~
 {: .output}
+
 We have now generated the `short_read_alignment.bam` file - this is a binary file (meaning it's not human readable) so we won't be checking its contents.
 
 Now carry out step 6, index the alignment:
@@ -549,7 +551,6 @@ Corrected 234 snps; 40 ambiguous bases; corrected 22 small insertions totaling 3
 # fix break: contig_1057:6798-8683 0 -0 +0 NoSolution
 # fix break: contig_1057:8886-9132 0 -0 +0 NoSolution
 # fix break: contig_1057:9394-12244 0 -0 +0 NoSolution
-
 ~~~
 {: .output}
 
