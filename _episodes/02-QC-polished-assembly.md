@@ -205,7 +205,7 @@ We can compare these basic assembly statistics in this way. However, these may n
 
 We will use [MetaQUAST](http://quast.sourceforge.net/metaquast) to further evaluate our metagenomic assemblies. MetaQUAST is based on the QUAST genome quality tool but accounts for high species diversity and misassemblies.
 
-MetaQUAST assesses the quality of assemblies using alignments to close references. This means we need to determine which references are appropriate for our data. MetaQUAST can automatically select reference genomes to align the assembly to, but it does not always pick the most appropriate references. As we know what organisms make up our metagenome we will be supplying a file containing the references we want to use instead. If you use MetaQUAST on your own data you could use the default references MetaQUAST selects or provide your own if you have an idea what organisms could be in your dataset.
+MetaQUAST assesses the quality of assemblies using alignments to close references. This means we need to determine which references are appropriate for our data. MetaQUAST can automatically select reference genomes to align the assembly to, but it does not always pick the most appropriate references. Instead we will provide it with a list of references. For now you can just use our list, but next lesson we will show you how we generated it so you know how to do it for your own data in future.
 
 So far we've been able to do a lot of work with files that already exist, but now we need to write our own file using the text editor Nano.
 
@@ -236,32 +236,40 @@ nano reference_genomes.txt
 ~~~
 {: .bash}
 
-You should see something like this:
+When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 4.8` and some suggested commands at the bottom of the page.
+There should also be a white box which indicates where your cursor is. It should look something like this:
 
 ![nano201711.png](../fig/nano201711.png)
 
 The text at the bottom of the screen shows the keyboard shortcuts for performing various tasks in `nano`. We will talk more about how to interpret this information soon.
 
-When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 4.8` and some suggested commands at the bottom of the page.
-There should also be a white box which indicates where your cursor is.
-
-Paste the following list of organism names into this file.
+Copy and paste the following list of organism names into this file (don't forget that <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>V</kbd> won't work in Unix. Try <kbd>Shift</kbd>+<kbd>Insert</kbd> instead, or right click and select paste from the drop-down menu - see the note below).
 
 ~~~
-Bacillus subtilis
-Cryptococcus neoformans
-Enterococcus faecalis
-Escherichia coli str. K-12 substr. MG1655
-Lactobacillus fermentum
-Listeria monocytogenes EGD-e
-Pseudomonas aeruginosa
-Saccharomyces cerevisiae
-Salmonella enterica subsp. enterica serovar Typhimurium str. LT2
-Staphylococcus aureus
+Bradyrhizobium erythrophlei
+Bradyrhizobium lablabi
+Bradyrhizobium canariense
+Bradyrhizobium sp. 200
+Bradyrhizobium sp. 170
+Bradyrhizobium diazoefficiens
+Bradyrhizobium sp. 186
+Rhodopseudomonas palustris
+Afipia sp. GAS231
+Bradyrhizobium arachidis
+Bradyrhizobium icense
+Bradyrhizobium sp. CCBAU 051011
+Rhodoplanes sp. Z2-YC6860
+Bradyrhizobium sp. S2-20-1
+Bradyrhizobium sp. S2-11-2
+Bradyrhizobium sp. CCBAU 51753
+Bradyrhizobium genosp. L
+Bradyrhizobium paxllaeri
+Frigoriglobus tundricola
+Bradyrhizobium sp. A19
 ~~~
 {: .bash}
 
-Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You will the be prompted with `File Name to Write: reference_genomes.txt` as we named the file when we first used the command we don't need to change this name and can press <kbd>Enter</kbd> to save the file. Once our file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
+Once we're happy with our text, we can press <kbd>Ctrl</kbd>-<kbd>O</kbd> (press the <kbd>Ctrl</kbd> or <kbd>Control</kbd> key and, while holding it down, press the <kbd>O</kbd> key) to write our data to disk. You will then be prompted with `File Name to Write: reference_genomes.txt` at the bottom of the screen. Pressing <kbd>Enter</kbd> will confirm and save your changes.  Once the file is saved, we can use <kbd>Ctrl</kbd>-<kbd>X</kbd> to quit the `nano` editor and
 return to the shell.
 
 > ## Control, Ctrl, or ^ Key
@@ -298,13 +306,37 @@ return to the shell.
 You should then be able to see this file when you `ls` and view it using `less`.
 ~~~
 ls
+less reference_genomes.txt
 ~~~
 {: .bash}
 ~~~
 reference_genomes.txt
 ~~~
 {: .output}
-
+~~~
+Bradyrhizobium erythrophlei
+Bradyrhizobium lablabi
+Bradyrhizobium canariense
+Bradyrhizobium sp. 200
+Bradyrhizobium sp. 170
+Bradyrhizobium diazoefficiens
+Bradyrhizobium sp. 186
+Rhodopseudomonas palustris
+Afipia sp. GAS231
+Bradyrhizobium arachidis
+Bradyrhizobium icense
+Bradyrhizobium sp. CCBAU 051011
+Rhodoplanes sp. Z2-YC6860
+Bradyrhizobium sp. S2-20-1
+Bradyrhizobium sp. S2-11-2
+Bradyrhizobium sp. CCBAU 51753
+Bradyrhizobium genosp. L
+Bradyrhizobium paxllaeri
+Frigoriglobus tundricola
+Bradyrhizobium sp. A19
+(END)
+~~~
+{: .output}
 Once we have our list of reference genomes we can run MetaQUAST on the original assembly and the two polished assemblies.
 
 First we should look at the help documentation to work out which commands are right for us.
@@ -443,64 +475,94 @@ metaquast.py -h
 > {: .output}
 {: .solution}
 
-From this we can see we need `--references-list` to supply our list of reference organisms (this is the file we just made called `reference_genomes.txt`), followed by our three assemblies separated by a space.
+The documentation gives the usage as `python metaquast.py [options] <files_with_contigs>`.
+- We can disregard the `python` portion of this
+
+The main "option" we want to include is `--references-list` to supply a text file containing our list of reference genomes (this is the file we just made).
+
+The `<files_with_contigs>` part just means that this is where we put the assemblies to be evaluated. We'll list them all one after the other so we can compare their outputs easily.
+
+Our command therefore looks like:
 ~~~
-metaquast.py --references-list reference_genomes.txt ../assembly/assembly.fasta ../medaka/consensus.fasta ../pilon/pilon.fasta
+metaquast.py --references-list reference_genomes.txt ../assembly/assembly.fasta ../medaka/consensus.fasta ../pilon/pilon.fasta &> metaquast.out &
 ~~~
 {: .bash}
 
-This should take around 5 minutes so we will be leaving it running in the foreground.
+Note that once again we are running the command in the background using the `&` symbol and redirecting the output to a file (`metaquast.out`) using `>`. This is because it takes around 8-10 minutes to run.
 
-Once starting the command you should see something like this and metaQUAST will start downloading the reference species we specified in our files.
+If you open up `metaquast.out` after running the command you should see something like this as metaQUAST starts downloading the reference species we specified in our files:
+
+~~~
+less metaquast.out
+~~~
+{: .bash}
 
 ~~~
 Version: 5.2.0
 
 System information:
-  OS: Linux-3.10.0
-  Python version: 3.10.5
-  CPUs number: 4
+  OS: Linux-5.4.0-131-generic-x86_64-with-glibc2.31 (linux_64)
+  Python version: 3.9.7
+  CPUs number: 8
 
-Started: 2022-09-26 17:26:14
+Started: 2023-03-16 16:32:09
 
-Logging to analysis/metaquast/quast_results/results_2022_09_26_17_26_13/metaquast.log
-NOTICE: Maximum number of threads is set to 10 (use --threads option to set it manually)
+Logging to /home/csuser/cs_course/analysis/metaquast/quast_results/results_YYYY_MM_DD_HH_MM_SS/metaquast.log
+NOTICE: Maximum number of threads is set to 2 (use --threads option to set it manually)
 
 Contigs:
   Pre-processing...
   1  ../assembly/assembly.fasta ==> assembly
-  2  ../medaka/consensus.fasta ==> consensus
+  2  ../medaka/consensus.fasta==> consensus
   3  ../pilon/pilon.fasta ==> pilon
 
 List of references was provided, starting to download reference genomes from NCBI...
 
-2022-09-26 17:26:31
+2023-03-16 16:32:11
 
-2022-09-26 17:26:31
-Trying to download found references from NCBI. Totally 10 organisms to try.
-  Bacillus_subtilis                                                | successfully downloaded (total 1, 9 more to go)
-  Cryptococcus_neoformans                                          | successfully downloaded (total 2, 8 more to go)
-  Enterococcus_faecalis                                            | successfully downloaded (total 3, 7 more to go)
-  Escherichia_coli_str._K-12_substr._MG1655                        | successfully downloaded (total 4, 6 more to go)
-  Lactobacillus_fermentum                                          | successfully downloaded (total 5, 5 more to go)
-  Listeria_monocytogenes_EGD-e                                     | successfully downloaded (total 6, 4 more to go)
-  Pseudomonas_aeruginosa                                           | successfully downloaded (total 7, 3 more to go)
-  Saccharomyces_cerevisiae                                         | successfully downloaded (total 8, 2 more to go)
-  Salmonella_enterica_subsp._enterica_serovar_Typhimurium_str._LT2 | successfully downloaded (total 9, 1 more to go)
-  Staphylococcus_aureus                                            | successfully downloaded (total 10, 0 more to go)
+2023-03-16 16:32:11
+Trying to download found references from NCBI. Totally 20 organisms to try.
+  Bradyrhizobium_erythrophlei     | successfully downloaded (total 1, 19 more to go)
+  Bradyrhizobium_lablabi          | successfully downloaded (total 2, 18 more to go)
+  Bradyrhizobium_canariense       | successfully downloaded (total 3, 17 more to go)
+  Bradyrhizobium_sp._200          | successfully downloaded (total 4, 16 more to go)
+  Bradyrhizobium_sp._170          | successfully downloaded (total 5, 15 more to go)
+  Bradyrhizobium_diazoefficiens   | successfully downloaded (total 6, 14 more to go)
+  Bradyrhizobium_sp._186          | successfully downloaded (total 7, 13 more to go)
+  Rhodopseudomonas_palustris      | successfully downloaded (total 8, 12 more to go)
+  Afipia_sp._GAS231               | successfully downloaded (total 9, 11 more to go)
+  Bradyrhizobium_arachidis        | successfully downloaded (total 10, 10 more to go)
+  Bradyrhizobium_icense           | successfully downloaded (total 11, 9 more to go)
+  Bradyrhizobium_sp._CCBAU_051011 | successfully downloaded (total 12, 8 more to go)
+  Rhodoplanes_sp._Z2-YC6860       | successfully downloaded (total 13, 7 more to go)
+  Bradyrhizobium_sp._S2-20-1      | successfully downloaded (total 14, 6 more to go)
+  Bradyrhizobium_sp._S2-11-2      | successfully downloaded (total 15, 5 more to go)
+  Bradyrhizobium_sp._CCBAU_51753  | successfully downloaded (total 16, 4 more to go)
+  Bradyrhizobium_genosp._L        | successfully downloaded (total 17, 3 more to go)
+  Bradyrhizobium_paxllaeri        | successfully downloaded (total 18, 2 more to go)
+  Frigoriglobus_tundricola        | successfully downloaded (total 19, 1 more to go)
+  Bradyrhizobium_sp._A19          | successfully downloaded (total 20, 0 more to go)
 ~~~
 {: .output}
 
 Once MetaQUAST has finished you should see an output like:
 ~~~
-MetaQUAST finished.
-  Log is saved to analysis/metaquast/quast_results/results_2022_09_26_17_26_13/metaquast.log
+[2]+  Done      metaquast.py --references-list reference_genomes.txt ../assembly/assembly.fasta ../medaka/consensus.fasta ../pilon/pilon.fasta &> metaquast.out & 
+~~~
+{: .output}
 
-Finished: 2022-09-26 17:31:00
-Elapsed time: 0:04:45.735581
-Total NOTICEs: 13; WARNINGs: 1; non-fatal ERRORs: 0
+
+You can also look in your `metaquast.out` and jump to the end using <kbd>Shift</kbd>+<kbd>g</kbd>.
+~~~
+MetaQUAST finished.
+  Log is saved to /home/csuser/cs_course/analysis/metaquast/quast_results/results_YYYY_MM_DD_HH_MM_SS/metaquast.log
+
+Finished: 2023-03-16 13:12:43
+Elapsed time: 0:10:51.624140
+Total NOTICEs: 45; WARNINGs: 0; non-fatal ERRORs: 0
 
 Thank you for using QUAST!
+
 ~~~
 {: .output}
 
