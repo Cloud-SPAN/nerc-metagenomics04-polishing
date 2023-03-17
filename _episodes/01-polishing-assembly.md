@@ -319,6 +319,45 @@ We will be using two pipes to join three separate steps. First we will align the
 
 Here are the various flags/options used in these commands and what they mean:
 
+<table>
+<thead>
+  <tr>
+    <th>Command</th>
+    <th>Flag/option</th>
+    <th>Meaning</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>bwa mem -t 8 [input assembly] [input short read file(s)]</td>
+    <td>-t 8</td>
+    <td>Number of threads (8)</td>
+  </tr>
+  <tr>
+    <td rowspan="2">samtools view - -Sb</td>
+    <td>-</td>
+    <td>Take piped output from `bwa mem` as input</td>
+  </tr>
+  <tr>
+    <td>-Sb</td>
+    <td>Convert from SAM to BAM format</td>
+  </tr>
+  <tr>
+    <td rowspan="3">samtools sort - -@4 -o short_read_alignment.bam</td>
+    <td>-</td>
+    <td>Take piped output from `samtools view` as input</td>
+  </tr>
+  <tr>
+    <td>-@4</td>
+    <td>Number of threads (4)</td>
+  </tr>
+  <tr>
+    <td> -o [filename]</td>
+    <td>Output a file with name [filename]</td>
+  </tr>
+</tbody>
+</table>
+
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
