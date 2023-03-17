@@ -317,6 +317,56 @@ We will be using two pipes to join three separate steps. First we will align the
 5. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
+Here are the various flags/options used in these commands and what they mean:
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Command</th>
+    <th class="tg-0pky">Flag/option</th>
+    <th class="tg-0pky">Meaning</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">bwa mem -t 8 [input assembly] [input short read file(s)]</td>
+    <td class="tg-0pky">-t 8</td>
+    <td class="tg-0pky">Number of threads (8)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="2">samtools view - -Sb</td>
+    <td class="tg-0pky">-</td>
+    <td class="tg-0pky">Take piped output from `bwa mem` as input</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">-Sb</td>
+    <td class="tg-0pky">Convert from SAM to BAM format</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="3">samtools sort - -@4 -o short_read_alignment.bam</td>
+    <td class="tg-0pky">-</td>
+    <td class="tg-0pky">Take piped output from `samtools view` as input</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">-@4</td>
+    <td class="tg-0pky">Number of threads (4)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"> -o [filename]</td>
+    <td class="tg-0pky">Output a file with name [filename]</td>
+  </tr>
+</tbody>
+</table>
+
 This will take around 60 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background.
 
 Add the pipes between these commands and run:
