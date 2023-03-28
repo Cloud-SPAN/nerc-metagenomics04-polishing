@@ -5,7 +5,7 @@ exercises: 10
 questions:
 - "Why do assemblies need to be polished?"
 - "What are the different purposes of polishing with short and long reads?"
-- "What software can we used to do long and short read polishing?"
+- "What software can we use to do long and short read polishing?"
 
 objectives:
 - "Understand why polishing metagenomes is important."  
@@ -21,12 +21,12 @@ keypoints:
 
 In the [previous episode](https://cloud-span.github.io/metagenomics01-qc-assembly/03-assembly/index.html) we generated a draft assembly using Flye from our long read Nanopore data. 
 
-Long reads can span regions which would would difficult to assemble with short reads such as regions with large repeats. Despite this, some long reads will be misassembled. In addition, the base accuracy of long reads is lower than that short reads and some bases will be incorrectly assigned. Consequently it is common to correct these errors known as "polishing" an assembly. We will use two polishing strategies:
+Long reads can span regions which make them difficult to assemble with short reads such as regions with large repeats. Despite this, some long reads will be misassembled. In addition, the base accuracy of long reads is lower than that of short reads and some bases will be incorrectly assigned. Consequently it is common to correct these errors known as "polishing" an assembly. We will use two polishing strategies:
 1. Polishing with long reads using [Medaka](https://github.com/nanoporetech/medaka). This maps the raw long reads to the assembly to identify contigs that have been incorrectly joined.
 2. Polishing with short reads using [Pilon](https://github.com/broadinstitute/pilon) which uses the more accurate short read data to correct incorrectly called bases in the assembly.
 More detail on the advantages and disadvantages of short and long read sequencing is covered in our [Statistically useful experimental design](https://cloud-span.github.io/experimental_design00-overview/) workshop in [Platform choice](https://cloud-span.github.io/experimental_design01-principles/01-platform/index.html).
 
-#### Polishing with short reads
+### Polishing with short reads
 
 <img width="525" height="307" src="{{ page.root }}/fig/04_polishing_diagram_v1.png" alt="Diagram showing overlap of reads for polishing" /> &nbsp; &nbsp; &nbsp;
 
@@ -60,7 +60,7 @@ medaka_consensus -h
 > ## `medaka_consensus` Help
 >
 > ~~~
-> medaka 1.7.0
+> medaka 1.7.2
 >
 > Assembly polishing via neural networks. Medaka is optimized
 > to work with the Flye assembler.
@@ -186,10 +186,10 @@ Constructing minimap index.
 > {: .output}
 > 
 > Things to check if your command fails:
-> - spelling/typos - have you spelled the command correctly and typed the directory names without error?
-> - paths - are all of your absolute/relative paths complete and accurate? (tip: using tab completion can help with peace of mind here, as you can check that your path definitely follows the right trail)
-> - flags - have you included all the mandatory flags, including the one (`-`) or two (`--`) dashes that usually accompany them?
-> - output - does the output in your log/.out file give you any clues as to where your error lies? e.g. in the example above the line "Failed to open the file /home/csuser/cs_course/analysis/assembly/assembly.fasta" suggests that this path might be wrong somehow.
+> - spelling/typos --- have you spelled the command correctly and typed the directory names without error?
+> - paths --- are all of your absolute/relative paths complete and accurate? (tip: using tab completion can help with peace of mind here, as you can check that your path definitely follows the right trail)
+> - flags --- have you included all the mandatory flags, including the one (`-`) or two (`--`) dashes that usually accompany them?
+> - output --- does the output in your log/.out file give you any clues as to where your error lies? e.g. in the example above the line "Failed to open the file /home/csuser/cs_course/analysis/assembly/assembly.fasta" suggests that this path might be wrong somehow.
 >
 > If you really can't find your mistake then the your instructors and/or other participants will be able to help you sort it out, so there is no need to panic!
 {: .callout} 
@@ -232,10 +232,10 @@ calls_to_draft.bam  calls_to_draft.bam.bai  consensus.fasta  consensus.fasta.gap
 Medaka has created multiple files:
 
 * `calls_to_draft.bam` - a BAM file containing the alignment of the raw reads (basecalls) to the draft assembly
-* `calls_to_draft.bam.bai` - an index file of the above BAM file
-* `consensus.fasta` - the consensus sequence, or polished assembly in our case in FASTA format
-* `consensus.fasta.gaps_in_draft_coords.bed` - a BED file containing information about the location of any gaps in the consensus sequence which can be used when visualising the assembly
-* `consensus_probs.hdf` - a file that contains the output of the neural network calculations and is not an output for end-users, so we don't need to worry about this file
+* `calls_to_draft.bam.bai` --- an index file of the above BAM file
+* `consensus.fasta` --- the consensus sequence, or polished assembly in our case in FASTA format
+* `consensus.fasta.gaps_in_draft_coords.bed` --- a BED file containing information about the location of any gaps in the consensus sequence which can be used when visualising the assembly
+* `consensus_probs.hdf` --- a file that contains the output of the neural network calculations and is not an output for end-users, so we don't need to worry about this file
 
 In our case we're interested in the polished assembly, so we want the `consensus.fasta` file.
 
@@ -301,20 +301,20 @@ cd pilon
 We will now do steps 3, 4 and 5 in one go by chaining them together with pipes.
 
 > ## Chaining together commands with a pipe
-> It is possible to chain together commands in unix using a process known as "piping". This allows the output from one command to be directly passed as input to the next without the need for intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe character is `|` and obtained with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
+> It is possible to chain together commands in Linux (and Unix) using a command known as "pipe". This allows the output from one command to be directly passed as input to other command without the need for using intermediate files. This is useful when the intermediate file is not needed and keeps your workspace tidy (and unfull). The pipe command is the character `|` which is obtained with <kbd>⇧ Shift</kbd> + <kbd>\</kbd> on most keyboards.
 >
-> You can use multiple pipes in one command but data will only go from the left to the right:
+> You can use multiple pipes in a single line of commands but data will only go from the left to the right:
 >
 > `command1 | command2 | command3 | .... |`
 {: .callout}
 
 We will be using two pipes to join three separate steps. First we will align the raw reads to the draft assembly, then convert the output to BAM format, before finally sorting this alignment to generate a sorted BAM file. Chaining the steps together together will only generate one final output file, avoiding the need to generate large intermediary files we don't need again between the other two steps.
 
-3. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
+1. we will align the short reads (the illumina data) to the assembly, consensus.fasta with `bwa mem`:
    `bwa mem -t 8 ~/cs_course/analysis/medaka/consensus.fasta ~/cs_course/data/illumina_fastq/ERR4998593_1.fastq ~/cs_course/data/illumina_fastq/ERR4998593_2.fastq`
-4. convert the short read alignment alignment to a BAM file `samtools view`:
+2. convert the short read alignment alignment to a BAM file with `samtools view`:
    `samtools view - -Sb`
-5. sort the short read alignment with `samtools sort`:
+3. sort the short read alignment with `samtools sort`:
    `samtools sort - -@4 -o short_read_alignment.bam`  
 
 Here are the various flags/options used in these commands and what they mean:
@@ -358,7 +358,7 @@ Here are the various flags/options used in these commands and what they mean:
 </tbody>
 </table>
 
-This will take around 60 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole command in brackets so we run all three steps in the background.
+This will take around 60 minutes so we will use `&> alignment.out &` to redirect the process to a file and to run the command in the background. We will also wrap our whole three-fold command in brackets so we run all three steps in the background.
 
 Add the pipes between these commands and run:
 ~~~
@@ -414,7 +414,9 @@ samtools index short_read_alignment.bam
 {: .bash}
 
 > ## Something to think about
-> Why didn't we include this command in the sequence of pipes in the previous step? The answer is that we will need access to the BAM file produced for further analysis.
+> Why didn't we include this command in the sequence of pipes in the previous step? 
+>
+> The answer is that we will need access to the BAM file produced for further analysis.
 > If we included this step as part of a pipe the intermediate BAM file would not be saved.
 {: .callout}
 
@@ -555,9 +557,9 @@ pilon --help
 You can read more about the possible outputs Pilon can produce in the [Wiki](https://github.com/broadinstitute/pilon/wiki/Output-File-Descriptions).
 
 We can see there are many different options for pilon. We will be using the defaults for our assembly.
-* `--genome` - this will be the output assembly from Medaka
-* `--frags` - the short reads we used to create the BAM alignment were paired, so we need to specify this using this flag
-* `--outdir` - this specifies a directory for all the output
+* `--genome` --- this will be the output assembly from Medaka
+* `--frags` --- the short reads we used to create the BAM alignment were paired, so we need to specify this using this flag
+* `--outdir` --- this specifies a directory for all the output
 
 Check you are in the `analysis` folder and run Pilon:
 
@@ -625,9 +627,9 @@ In the next episode we will assess the quality of this assembly and compare its 
 
 > ## Recommended reading:
 > While you're waiting for the polishing to finish, here's some things you might want to read about:
-> * Comparison of combined assembly and polishing method [Trycycler: consensus long-read assemblies for bacterial genomes](https://link.springer.com/article/10.1186/s13059-021-02483-z)
+> * Comparison of combined assembly and polishing methods [Trycycler: consensus long-read assemblies for bacterial genomes](https://link.springer.com/article/10.1186/s13059-021-02483-z)
 > * Polishing strategy for ONT and Pacbio Hifi reads [Polishing high-quality genome assemblies](https://www.nature.com/articles/s41592-022-01515-1)
-> * Comparison of polishing of ONT data with alignment free tool Jasper compared to POLCA,NextPolish and ntEdit [JASPER: a fast genome polishing tool that improves accuracy and creates population-specific reference genomes](https://www.biorxiv.org/content/10.1101/2022.06.14.496115v1.full)
+> * Comparison of polishing of ONT data with alignment free tool Jasper compared to POLCA, NextPolish and ntEdit [JASPER: a fast genome polishing tool that improves accuracy and creates population-specific reference genomes](https://www.biorxiv.org/content/10.1101/2022.06.14.496115v1.full)
 > * Comparison of short read polishers including pilon to the polisher Polypolish [Polypolish: Short-read polishing of long-read bacterial genome assemblies](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009802#)
 > * Pilon short read polisher paper [Pilon: An Integrated Tool for Comprehensive Microbial Variant Detection and Genome Assembly Improvement](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0112963)
 > * Accuracy of polishers including medaka for nanopore data [Nanpore consensus quality](https://github.com/rrwick/August-2019-consensus-accuracy-update#racon)

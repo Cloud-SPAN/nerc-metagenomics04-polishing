@@ -108,7 +108,7 @@ seqkit stats --help
 
 ### The N50 length
 
-N50 is a metric indicating the distribution of contig lengths in an assembly. The value of N50 indicates that 50% of the total sequence is in contigs that are the that size or larger. For a more thorough introduction to N50, read [What's N50? By The Molecular Ecologist](https://www.molecularecologist.com/2017/03/29/whats-n50/).
+N50 is a metric indicating the distribution of contig lengths in an assembly. The value of N50 indicates that 50% of the total sequence is in contigs that are that size or larger. For a more thorough introduction to N50, read [What's N50? By The Molecular Ecologist](https://www.molecularecologist.com/2017/03/29/whats-n50/).
 
 It indicates the average size of the contigs the assembly software has produced. A higher N50 length means that more of the assembly is in longer fragments. That means the chunks of sequence produced by the assembler are, on average, larger.
 
@@ -230,14 +230,13 @@ nano reference_genomes.txt
 ~~~
 {: .bash}
 
-When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 4.8` and some suggested commands at the bottom of the page.
-There should also be a white box which indicates where your cursor is. It should look something like this:
+When you press enter your terminal should change. You should see a white bar at the top with `GNU nano 4.8` (instead of 'GNU nano 2.5.3' shown in the screenshot below) and some suggested commands at the bottom of the page. There should also be a white box which indicates where your cursor is. It should look something like this:
 
 ![nano201711.png](../fig/nano201711.png)
 
 The text at the bottom of the screen shows the keyboard shortcuts for performing various tasks in `nano`. We will talk more about how to interpret this information soon.
 
-Copy and paste the following list of organism names into this file (don't forget that <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>v</kbd> won't work in Unix. Try <kbd>Shift</kbd>+<kbd>Insert</kbd> instead, or right click and select paste from the drop-down menu - see the note below).
+Copy and paste the following list of organism names into this file (don't forget that <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>v</kbd> won't work in Linux (Unix). Try <kbd>Shift</kbd>+<kbd>Insert</kbd> instead, or right click and select paste from the drop-down menu - see the note below).
 
 ~~~
 Bradyrhizobium erythrophlei
@@ -331,6 +330,8 @@ Bradyrhizobium sp. A19
 (END)
 ~~~
 {: .output}
+
+### Running **metaquast**
 Once we have our list of reference genomes we can run MetaQUAST on the original assembly and the two polished assemblies.
 
 First we should look at the help documentation to work out which commands are right for us.
@@ -580,6 +581,7 @@ If you want to explore all the files you can download this whole directory using
 However, most of this information is in the `report.html` file so we can download only that one instead.
 As this is a HTML file we will first need to download it to our local computer in order to open it.
 
+### Downloading metaquast **report.html**
 ~~~
 scp -i login-key-instanceNNN.pem csuser@instanceNNN.cloud-span.aws.york.ac.uk:~/cs_course/analysis/metaquast/quast_results/results_YYYY_MM_DD_HH_MM_SS/report.html .
 ~~~
