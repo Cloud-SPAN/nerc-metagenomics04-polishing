@@ -137,16 +137,17 @@ We can also look in the output file (`medaka.out`) to check the progress of the 
 less medaka.out
 ~~~
 {: .bash}
-If the Medaka command has been run correctly you will see something like this at the start of the output:
+If the Medaka command has been run correctly you will see something like this near the start of the output:
 ~~~
 Checking program versions
-This is medaka 1.7.0
-Program    Version    Required   Pass     
-bcftools   1.15.1     1.11       True     
-bgzip      1.15.1     1.11       True     
-minimap2   2.24       2.11       True     
-samtools   1.15.1     1.11       True     
-tabix      1.15.1     1.11       True     
+This is medaka 1.7.2
+This is medaka 1.7.2
+Program    Version            Required   Pass
+bcftools   1.16-20-g6f4732b   1.11       True
+bgzip      1.16-16-g3c6f83f   1.11       True
+minimap2   2.24               2.11       True
+samtools   1.16.1-33-gbd942a0 1.11       True
+tabix      1.16-16-g3c6f83f   1.11       True
 Aligning basecalls to draft
 Constructing minimap index.
 [M::mm_idx_gen::0.515*0.99] collected minimizers
@@ -159,6 +160,14 @@ Constructing minimap index.
 
 > ## Help!
 > Medaka may give you a warning along the lines of:
+> ~~~
+> 2023-03-31 12:22:21.572954: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+> 2023-03-31 12:22:21.573012: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+> 2023-03-31 12:22:24.690162: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Couldnot load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+> 2023-03-31 12:22:24.690198: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+> ~~~
+> {: .output}
+> and/or
 > ~~~
 > 2022-10-25 09:07:35.970532: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
 > 2022-10-25 09:07:35.970583: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
@@ -558,7 +567,7 @@ You can read more about the possible outputs Pilon can produce in the [Wiki](htt
 
 We can see there are many different options for pilon. We will be using the defaults for our assembly.
 * `--genome` --- this will be the output assembly from Medaka
-* `--frags` --- the short reads we used to create the BAM alignment were paired, so we need to specify this using this flag
+* `--frags` --- the short reads we used to create the BAM alignment were paired-end fragments, so we need to specify this using this flag
 * `--outdir` --- this specifies a directory for all the output
 
 Check you are in the `analysis` folder and run Pilon:
