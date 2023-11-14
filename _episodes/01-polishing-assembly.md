@@ -132,7 +132,7 @@ If it is successfully running you should see an output like:
 ~~~
 {: .output}
 
-We can also look in the output file (`medaka.out`) to check the progress of the command.
+We can also look in the output file (`medaka.out`) to check the progress of the command. In this case Medaka will take about three hours to run.
 ~~~
 less medaka.out
 ~~~
@@ -225,7 +225,7 @@ Polished assembly written to medaka/consensus.fasta, have a nice day.
 ~~~
 {: .output}
 
-Once Medaka has completed we can navigate into the output directory and look at the files it has generated.
+Once Medaka has completed (~ 3 hours on average) we can navigate into the output directory and look at the files it has generated.
 
 ~~~
 cd medaka
