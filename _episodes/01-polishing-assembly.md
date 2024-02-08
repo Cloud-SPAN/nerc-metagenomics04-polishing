@@ -90,7 +90,7 @@ Let's have a look at the flags and options we're going to use:
 
 | Flag/option | Meaning                                                                                                       | Our input                                                  |
 |-------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| `-i`        | Input basecalls (i.e. what we are polishing with)                                                             | `-i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered` |
+| `-i`        | Input basecalls (i.e. what we are polishing with)                                                             | `-i ~/cs_course/data/nano_fastq/ERR5000342_sub12_filtered` |
 | `-d`        | Input assembly (i.e. what is being polished)                                                                  | `-d ~/cs_course/analysis/assembly/assembly.fasta`          |
 | `-m`        | Neural network model to use (described in [the documentation](https://github.com/nanoporetech/medaka#models)) | `-m r941_min_hac_g507`                                     |
 | `-o`        | Output directory                                                                                              | `-o medaka`                                                |
@@ -109,7 +109,7 @@ mkdir medaka
 Now it's time to run Medaka!
 ~~~
 medaka_consensus \
--i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered.fastq \
+-i ~/cs_course/data/nano_fastq/ERR5000342_sub12_filtered.fastq \
 -d assembly/assembly.fasta \
 -m r941_min_hac_g507 \
 -o medaka \
@@ -181,7 +181,7 @@ Constructing minimap index.
 > ## Help!
 > If you have entered the command incorrectly you will usually find out quite quickly! An easy way to tell is if you get an output in your terminal that starts with 'Exit' rather than 'Done':
 > ~~~
-> [1]+  Exit 1                  medaka_consensus -i ~/cs_course/data/nano_fastq/ERR5000342_sub15_filtered.fastq -d assembly/assembly.fasta -m r941_min_hac_g507 -o medaka -t 8 &> medaka.out
+> [1]+  Exit 1                  medaka_consensus -i ~/cs_course/data/nano_fastq/ERR5000342_sub12_filtered.fastq -d assembly/assembly.fasta -m r941_min_hac_g507 -o medaka -t 8 &> medaka.out
 > ~~~
 > {: .output}
 >
