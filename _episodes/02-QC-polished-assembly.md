@@ -175,21 +175,21 @@ seqkit stats -a assembly/assembly.fasta medaka/consensus.fasta pilon/pilon.fasta
 ~~~
 {: .bash}
 
-| file                    | format | type | num_seqs | sum_len    | min_len| avg_len  | max_len | Q1    | Q2     | Q3     | sum_gap | N50    | Q20(%) | Q30(%) | GC(%) |
-|-------------------------|--------|------|----------|------------|--------|----------|---------|-------|--------|--------|---------|--------|--------|--------|-------|
-| assembly/assembly.fasta | FASTA  | DNA  | 1,161    | 18,872,828 | 528    | 16,255.7 | 118,427 | 7,513 | 11,854 | 19,634 | 0       | 20,921 | 0.00   | 0.00   | 66.26 |
-| medaka/consensus.fasta  | FASTA  | DNA  | 1,161    | 18,930,486 | 526    | 16,305.3 | 118,702 | 7,517 | 11,935 | 19,681 | 0       | 20,969 | 0.00   | 0.00   | 65.91 |
-| pilon/pilon.fasta       | FASTA  | DNA  | 1,161    | 18,828,558 | 526    | 16,217.5 | 117,903 | 7,495 | 11,861 | 19,467 | 0       | 20,849 | 0.00   | 0.00   | 65.86 |
+| file                    | format | type | num_seqs | sum_len    | min_len| avg_len  | max_len | Q1      | Q2     | Q3       | sum_gap | N50    | Q20(%) | Q30(%) | GC(%) |
+|-------------------------|--------|------|----------|------------|--------|----------|---------|---------|--------|----------|---------|--------|--------|--------|-------|
+| assembly/assembly.fasta | FASTA  | DNA  | 791      | 11,979,728 | 662    | 15,145   | 95,860  | 7,148   | 11,019 | 18,874   | 0       | 19,835 | 0.00   | 0.00   | 66.58 |
+| medaka/consensus.fasta  | FASTA  | DNA  | 791      | 12,019,945 | 662    | 15,195.9 | 96,516  | 7,127.5 | 10,960 | 18,914.5 | 0       | 19,831 | 0.00   | 0.00   | 65.16 |
+| pilon/pilon.fasta       | FASTA  | DNA  | 791      | 11,950,064 | 662    | 15,107.5 | 95,826  | 7,108.5 | 10,902 | 18,830   | 0       | 19,748 | 0.00   | 0.00   | 66.13 |
 
 > ## Exercise 3: Comparing the Assemblies
 > Using the seqkit output for all three assemblies, compare the statistics for each of the three assemblies. What has changed across the two rounds of polishing? (From assembly>medaka>pilon)
 >
 > > ## Solution
 > > Between the original assembly and the medaka polished assembly:
-> > - Total length, maximum length and average length have all increased as has the N50. The minimum length and GC content have decreased as has the quartile range of lengths.  
+> > - Total length, maximum length and average length have all increased. The N50 and GC content have decreased.
 > >
 > > Between the medaka polished assembly and the pilon polished assembly:
-> > - All variables have either decreased in length or stayed the same (number of sequences and minimum length).
+> > - All variables have either decreased in length or stayed the same, except the maximum length which is higher (as is GC content by a very small margin).
 > {: .solution}
 {: .challenge}
 
